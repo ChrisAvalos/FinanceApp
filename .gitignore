@@ -23,6 +23,10 @@ gmail_token.json
 backend/backups/
 backend/digest/
 
+# ---- Generated debug / runtime artifacts ----
+backend/.debug/
+backend/.plan_snapshots/
+
 # ---- Browser-automation auth state (cookies, screenshots, sessions) ----
 .auth_state/
 

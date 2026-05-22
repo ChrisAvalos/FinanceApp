@@ -49,7 +49,7 @@ git commit -m "Initial commit: Finance App - local-first personal finance engine
 REM --- 6. Connect the GitHub remote ---------------------------------
 echo Connecting GitHub remote...
 git remote remove origin >nul 2>nul
-git remote add origin https://github.com/ChrisAvalos/FinanceApp.git
+git remote add origin https://ChrisAvalos@github.com/ChrisAvalos/FinanceApp.git
 
 echo.
 echo ====================================================================
