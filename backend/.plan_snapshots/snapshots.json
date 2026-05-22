@@ -1,0 +1,20 @@
+{
+  "xfinity_internet": {
+    "perk_keys": [],
+    "plan_name": "Xfinity Internet (plan name not found)",
+    "provider": "xfinity_internet",
+    "raw_text": "Page Not Found | Xfinity You need to enable JavaScript to run this app. Sorry, we couldn't find the page you were looking for. Check out the latest from Xfinity: TV Deals | Internet Deals | Shop All Offers | What's X1? | Help & Support OneTrust Cookie Banner Your Global Privacy Control has been honored, as reflected below. Your Cookie Preferences Like many companies, we use cookies and other common tracking technologies (Cookies) to optimize and analyze your experience on our Services, and serve",
+    "scraped_at": "2026-05-08T01:08:08.739116",
+    "source_url": "https://www.xfinity.com/learn/account-management"
+  },
+  "xfinity_mobile": {
+    "perk_keys": [
+      "peacock"
+    ],
+    "plan_name": "unlimited",
+    "provider": "xfinity_mobile",
+    "raw_text": "Sign in to Xfinity We can't sign you in Your browser may be set to block cookies, or you may have Javascript disabled. Check your browser settings and try again. Try again Skip to Main Content Manage Plan Back Manage Plan View & Manage Current Services Mobile Deals Billing & Pay Back Billing & Pay Make a Payment View Bill & Transaction History Manage Auto Pay Manage Paperless Billing Manage Payment Methods Contact & Support Back Contact & Support Fix an Issue Contact Us Membership Benefits Inter",
+    "scraped_at": "2026-05-08T01:08:13.225443",
+    "source_url": "https://www.xfinity.com/learn/account-management"
+  }
+}

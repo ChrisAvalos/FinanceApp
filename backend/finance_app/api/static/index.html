@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Finance — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Chase-inspired: deep navy header, light grey background, white cards. */
+    :root {
+      --bg:          #f5f6f8;
+      --card:        #ffffff;
+      --hover:       #f0f3f7;
+      --border:      #e3e6eb;
+      --text:        #1b2430;
+      --text-muted:  #5b6676;
+      --text-soft:   #8b93a0;
+      --brand:       #117ACA;   /* Chase blue */
+      --brand-navy:  #0F4D8C;
+      --brand-deep:  #062a51;
+      --brand-light: #E6F1FB;
+      --inflow:      #00754A;
+      --outflow:     #c2161e;
+      --warn:        #c78100;
+      --shadow-card: 0 1px 2px rgba(15,34,58,0.06), 0 1px 1px rgba(15,34,58,0.03);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { color: var(--brand-navy); text-decoration: underline; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--brand); }
+
+    /* Header — Chase-style deep navy bar + secondary navy nav */
+    header.app {
+      background: var(--brand-deep);
+      color: white;
+    }
+    header.app .top {
+      max-width: 1200px; margin: 0 auto;
+      padding: 16px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    header.app .brand-mark {
+      display: flex; align-items: center; gap: 12px;
+    }
+    header.app .brand-mark .logo {
+      width: 32px; height: 32px;
+      background: var(--brand);
+      color: white; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 2px;
+    }
+    header.app h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+    header.app .secure { font-size: 12px; color: var(--brand-light); }
+    nav.tabs {
+      background: var(--brand-navy);
+    }
+    nav.tabs .inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 24px;
+      display: flex; gap: 24px;
+      font-size: 14px;
+    }
+    nav.tabs a {
+      color: var(--brand-light);
+      padding: 12px 0;
+      border-bottom: 2px solid transparent;
+      font-weight: 500;
+    }
+    nav.tabs a:hover { text-decoration: none; border-bottom-color: rgba(255,255,255,0.5); }
+    nav.tabs a.active { color: white; border-bottom-color: white; font-weight: 600; }
+
+    main { padding: 32px 24px; max-width: 1200px; margin: 0 auto; }
+
+    /* Stat cards */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+    }
+    .card .label {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .card .value { font-size: 28px; font-weight: 600; margin-top: 6px; font-variant-numeric: tabular-nums; }
+    .card .sub { color: var(--text-soft); font-size: 12px; margin-top: 4px; }
+    .inflow  { color: var(--inflow); }
+    .outflow { color: var(--outflow); }
+
+    /* Section headers */
+    h2.section {
+      margin: 40px 0 12px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .section-row {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin: 40px 0 12px;
+    }
+    .section-row h2 { margin: 0; font-size: 18px; font-weight: 600; }
+    .section-row .subtitle { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+
+    /* Tables */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--hover); border-bottom: 1px solid var(--border); }
+    th {
+      text-align: left;
+      padding: 10px 16px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text);
+    }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: var(--hover); }
+    .amount { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .muted { color: var(--text-muted); }
+
+    /* Badges / pills */
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #f0f3f7;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge.active    { background: var(--brand-light); color: var(--brand-navy); }
+    .badge.suspected { background: #fff4de; color: var(--warn); }
+    .badge.cancelled { background: #f0f3f7; color: var(--text-muted); text-decoration: line-through; }
+    .badge.dismissed { background: #f0f3f7; color: var(--text-muted); }
+
+    /* Buttons */
+    button.primary {
+      background: var(--brand);
+      color: white;
+      border: 0;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-family: inherit;
+    }
+    button.primary:hover { background: var(--brand-navy); }
+    button.primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    button.ghost {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    button.ghost:hover { border-color: var(--brand); color: var(--brand); }
+
+    input, select {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    input:focus, select:focus { outline: 2px solid var(--brand); outline-offset: 1px; }
+
+    .toolbar { display: flex; gap: 10px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+    .row-actions button {
+      background: none;
+      border: 0;
+      color: var(--brand);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 4px 0;
+      margin-left: 12px;
+      font-family: inherit;
+    }
+    .row-actions button:hover { color: var(--brand-navy); }
+    .row-actions button.danger { color: var(--text-muted); }
+    .row-actions button.danger:hover { color: var(--outflow); }
+
+    .loading { padding: 48px; text-align: center; color: var(--text-muted); font-size: 14px; }
+    footer.app {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: var(--text-soft);
+      font-size: 11px;
+      display: flex; justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <header class="app">
+    <div class="top">
+      <div class="brand-mark">
+        <div class="logo">$</div>
+        <h1>Finance</h1>
+      </div>
+      <span class="secure" id="status">Loading…</span>
+    </div>
+    <nav class="tabs">
+      <div class="inner">
+        <a href="#overview" class="active">Overview</a>
+        <a href="#accounts">Accounts</a>
+        <a href="#transactions">Transactions</a>
+        <a href="#subscriptions">Subscriptions</a>
+        <a href="/docs">API</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="stats" id="stats"></section>
+
+    <div class="section-row" id="transactions">
+      <div>
+        <h2>Recent transactions</h2>
+        <div class="subtitle">Everything your accounts show, categorized automatically.</div>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button class="ghost" id="categorize">Run categorization</button>
+        <a href="/docs" style="font-size:12px; font-weight:600;">API docs →</a>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <input id="search" placeholder="Search description…" />
+      <select id="uncategorized">
+        <option value="">All transactions</option>
+        <option value="1">Only uncategorized</option>
+      </select>
+      <button class="ghost" id="reload">Reload</button>
+    </div>
+
+    <div class="table-wrap">
+      <table id="txn-table">
+        <thead>
+          <tr><th>Date</th><th>Description</th><th>Category</th><th class="amount">Amount</th><th>Source</th></tr>
+        </thead>
+        <tbody><tr><td colspan="5" class="loading">No data yet — upload a CSV or connect a bank.</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="section-row" id="subscriptions">
+      <div>
+        <h2>Subscriptions &amp; recurring charges</h2>
+        <div class="subtitle">Detected automatically from your transaction patterns.</div>
+      </div>
+      <button class="primary" id="detect-subs">Detect subscriptions</button>
+    </div>
+
+    <div class="table-wrap">
+      <table id="subs-table">
+        <thead>
+          <tr><th>Merchant</th><th>Status</th><th>Cadence</th><th class="amount">Amount</th><th>Next charge</th><th></th></tr>
+        </thead>
+        <tbody><tr><td colspan="6" class="loading">No subscriptions detected yet. Click <em>Detect subscriptions</em>.</td></tr></tbody>
+      </table>
+    </div>
+
+    <footer class="app">
+      <span>Local-first. Data stays on your machine.</span>
+      <span>v0.2 — Phase 2 in progress</span>
+    </footer>
+  </main>
+
+  <script>
+    const fmtCents = (c) => (c / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    const fmtDate  = (d) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const el = (id) => document.getElementById(id);
+
+    let categoryMap = {};
+
+    function cadenceLabel(days) {
+      if (!days) return '—';
+      if (days <= 8)   return 'Weekly';
+      if (days <= 16)  return 'Biweekly';
+      if (days <= 35)  return 'Monthly';
+      if (days <= 70)  return 'Bimonthly';
+      if (days <= 95)  return 'Quarterly';
+      if (days <= 190) return 'Semiannual';
+      return 'Annual';
+    }
+
+    async function loadCategories() {
+      const cats = await fetch('/api/categories').then(r => r.json());
+      categoryMap = Object.fromEntries(cats.map(c => [c.id, c.name]));
+    }
+
+    async function loadStats() {
+      const s = await fetch('/api/stats/summary').then(r => r.json());
+      const subs = await fetch('/api/subscriptions').then(r => r.json());
+      const activeSubs = subs.filter(x => x.status === 'active');
+      const subTotal = activeSubs.reduce((a, x) => a + x.amount_cents, 0);
+      const catsTouched = new Set(s.by_category.map(r => r.category_id)).size;
+      el('stats').innerHTML = `
+        <div class="card">
+          <div class="label">Money in · 90d</div>
+          <div class="value inflow">${fmtCents(s.total_inflow_cents)}</div>
+          <div class="sub">Deposits, refunds, transfers in</div>
+        </div>
+        <div class="card">
+          <div class="label">Money out · 90d</div>
+          <div class="value outflow">${fmtCents(s.total_outflow_cents)}</div>
+          <div class="sub">Card charges, bills, transfers out</div>
+        </div>
+        <div class="card">
+          <div class="label">Net · 90d</div>
+          <div class="value ${s.net_cents >= 0 ? 'inflow' : 'outflow'}">${fmtCents(s.net_cents)}</div>
+        </div>
+        <div class="card">
+          <div class="label">Recurring · monthly</div>
+          <div class="value outflow">${fmtCents(subTotal)}</div>
+          <div class="sub">${activeSubs.length} active subscription${activeSubs.length === 1 ? '' : 's'} · ${catsTouched} categories</div>
+        </div>`;
+    }
+
+    async function loadTxns() {
+      const params = new URLSearchParams();
+      if (el('search').value) params.set('search', el('search').value);
+      if (el('uncategorized').value) params.set('only_uncategorized', 'true');
+      params.set('limit', '100');
+      const txns = await fetch(`/api/transactions?${params}`).then(r => r.json());
+      const tbody = el('txn-table').querySelector('tbody');
+      if (!txns.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="loading">No transactions yet.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = txns.map(t => `
+        <tr>
+          <td class="muted" style="white-space:nowrap;">${fmtDate(t.posted_date)}</td>
+          <td style="font-weight:500;">${t.description_raw}</td>
+          <td>${categoryMap[t.category_id] ? `<span class="pill">${categoryMap[t.category_id]}</span>` : '<span class="muted">Uncategorized</span>'}</td>
+          <td class="amount ${t.amount_cents < 0 ? 'outflow' : 'inflow'}">${fmtCents(t.amount_cents)}</td>
+          <td><span class="pill" style="text-transform:uppercase; font-size:10px; letter-spacing:0.04em;">${t.source}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadSubs() {
+      const subs = await fetch('/api/subscriptions').then(r => r.json());
+      const tbody = el('subs-table').querySelector('tbody');
+      if (!subs.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="loading">No subscriptions detected yet. Click <em>Detect subscriptions</em>.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = subs.map(s => `
+        <tr>
+          <td style="font-weight:500;">${s.name}</td>
+          <td><span class="badge ${s.status}">${s.status}</span></td>
+          <td class="muted">${cadenceLabel(s.cadence_days)} · ${s.cadence_days}d</td>
+          <td class="amount outflow">${fmtCents(s.amount_cents)}</td>
+          <td class="muted">${s.next_expected_date ? fmtDate(s.next_expected_date) : '—'}</td>
+          <td class="row-actions" style="text-align:right; white-space:nowrap;">
+            <button data-action="active"    data-id="${s.id}">Confirm</button>
+            <button data-action="cancelled" data-id="${s.id}" class="danger">Cancel</button>
+            <button data-action="dismissed" data-id="${s.id}" class="danger">Dismiss</button>
+          </td>
+        </tr>
+      `).join('');
+      tbody.querySelectorAll('button[data-action]').forEach(btn => {
+        btn.onclick = async () => {
+          await fetch(`/api/subscriptions/${btn.dataset.id}/status`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: btn.dataset.action }),
+          });
+          await Promise.all([loadSubs(), loadStats()]);
+        };
+      });
+    }
+
+    async function refresh() {
+      el('status').textContent = 'Loading…';
+      try {
+        await loadCategories();
+        await Promise.all([loadStats(), loadTxns(), loadSubs()]);
+        el('status').textContent = 'Secure · Local-only';
+      } catch (e) {
+        el('status').textContent = 'Error: ' + e.message;
+      }
+    }
+
+    el('reload').onclick = refresh;
+    el('search').oninput = () => { clearTimeout(window._t); window._t = setTimeout(loadTxns, 250); };
+    el('uncategorized').onchange = loadTxns;
+    el('categorize').onclick = async () => {
+      el('status').textContent = 'Categorizing…';
+      const res = await fetch('/api/rules/run', { method: 'POST' }).then(r => r.json());
+      await refresh();
+      alert('Categorization done: ' + JSON.stringify(res));
+    };
+    el('detect-subs').onclick = async () => {
+      el('status').textContent = 'Detecting subscriptions…';
+      const res = await fetch('/api/subscriptions/detect', { method: 'POST' }).then(r => r.json());
+      await Promise.all([loadSubs(), loadStats()]);
+      el('status').textContent = 'Secure · Local-only';
+      alert(`Detection done — created ${res.created}, updated ${res.updated}`);
+    };
+
+    refresh();
+  </script>
+</body>
+</html>

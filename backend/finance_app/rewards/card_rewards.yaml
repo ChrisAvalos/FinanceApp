@@ -1,0 +1,139 @@
+# Card-rewards profiles. Used by rewards/optimizer.py to compute the
+# "you left $X on the table" report.
+#
+# Schema per entry:
+#   name              : display name (e.g. "Chase Sapphire Preferred")
+#   name_patterns     : list of substrings (case-insensitive) matched
+#                       against Account.name. First match wins.
+#   base_multiplier   : default points/cash-back per dollar (1.0 = 1x).
+#   category_multipliers : dict of category slug → multiplier. Slug must
+#                       exist in db/seed.py CATEGORY_SEED. Higher overrides
+#                       base_multiplier when the txn's category matches.
+#   annual_caps_cents : optional. Per-category annual spend caps after
+#                       which the boost reverts to base_multiplier. Caps
+#                       in cents. Omit field for uncapped boosts.
+#   notes             : freeform — human-readable detail surfaced in the UI.
+#
+# When a category multiplier is "tied" between two cards, the optimizer
+# picks the card with the higher base_multiplier (sensible tiebreak),
+# then the one with the looser annual cap, then by display order here.
+#
+# Add new cards by appending an entry. The point-value heuristic assumes
+# 1 point = 1 cent unless otherwise noted in the card's notes; that's
+# the conservative-redemption default. Travel-portal redemptions can do
+# better but vary, so we don't promise the high-end value.
+
+- name: "Chase Sapphire Preferred"
+  name_patterns: ["sapphire preferred", "csp"]
+  base_multiplier: 1.0
+  category_multipliers:
+    food.restaurants: 3.0
+    food.delivery: 3.0
+    food.groceries: 3.0  # online grocery purchases
+    subscriptions.streaming: 3.0
+    personal.travel: 2.0
+  annual_caps_cents: {}
+  notes: "3x dining/streaming/online-groceries, 5x travel via Chase Travel."
+
+- name: "Chase Sapphire Reserve"
+  name_patterns: ["sapphire reserve", "csr"]
+  base_multiplier: 1.0
+  category_multipliers:
+    food.restaurants: 3.0
+    food.delivery: 3.0
+    personal.travel: 3.0
+  annual_caps_cents: {}
+  notes: "3x dining + travel after the $300 travel credit absorbs the first $300/yr."
+
+- name: "Chase Freedom Unlimited"
+  name_patterns: ["freedom unlimited", "freedom unl", "cfu"]
+  base_multiplier: 1.5
+  category_multipliers:
+    food.restaurants: 3.0
+    food.delivery: 3.0
+    health.pharmacy: 3.0
+    personal.travel: 5.0
+  annual_caps_cents: {}
+  notes: "1.5% on everything else; 5% travel via Chase, 3% dining + drugstore."
+
+- name: "Amex Gold"
+  name_patterns: ["amex gold", "american express gold", "gold card"]
+  base_multiplier: 1.0
+  category_multipliers:
+    food.restaurants: 4.0
+    food.delivery: 4.0
+    food.groceries: 4.0
+    personal.travel: 3.0
+  annual_caps_cents:
+    food.groceries: 2500000   # $25,000/yr cap on supermarket 4x
+  notes: "4x dining + US supermarkets (cap $25k), 3x flights booked direct."
+
+- name: "Amex Platinum"
+  name_patterns: ["amex platinum", "platinum card"]
+  base_multiplier: 1.0
+  category_multipliers:
+    personal.travel: 5.0
+  annual_caps_cents: {}
+  notes: "5x flights/prepaid hotels via Amex Travel. Premium card, weak on everything else."
+
+- name: "Amex Blue Cash Preferred"
+  name_patterns: ["blue cash preferred", "amex bcp", "bcp"]
+  base_multiplier: 1.0
+  category_multipliers:
+    food.groceries: 6.0
+    subscriptions.streaming: 6.0
+    transport.gas: 3.0
+    transport.public_transit: 3.0
+    transport.rideshare: 3.0
+  annual_caps_cents:
+    food.groceries: 600000     # $6,000/yr cap on supermarket 6%
+    subscriptions.streaming: 600000  # $6k cap on streaming 6%
+  notes: "6% US supermarkets ($6k cap) + select streaming, 3% transit + gas."
+
+- name: "Citi Custom Cash"
+  name_patterns: ["citi custom cash", "custom cash"]
+  base_multiplier: 1.0
+  category_multipliers:
+    food.restaurants: 5.0
+    food.groceries: 5.0
+    transport.gas: 5.0
+  annual_caps_cents:
+    food.restaurants: 600000    # $500/mo = $6k/yr each, but only ONE
+    food.groceries: 600000      # category counts in any given month.
+    transport.gas: 600000       # We model it loosely as a per-cat cap.
+  notes: "5% on your TOP spending category each cycle (up to $500/mo). Any single cat."
+
+- name: "Apple Card"
+  name_patterns: ["apple card"]
+  base_multiplier: 1.0
+  category_multipliers:
+    shopping.electronics: 3.0
+  annual_caps_cents: {}
+  notes: "3% on Apple direct, 2% via Apple Pay (partial — modeled as 1x base here)."
+
+- name: "Capital One Savor"
+  name_patterns: ["capital one savor", "savor card", "savorone"]
+  base_multiplier: 1.0
+  category_multipliers:
+    food.restaurants: 3.0
+    food.delivery: 3.0
+    food.groceries: 3.0
+    subscriptions.streaming: 3.0
+    personal.entertainment: 3.0
+  annual_caps_cents: {}
+  notes: "3% dining/groceries/entertainment/streaming."
+
+- name: "Capital One Venture"
+  name_patterns: ["capital one venture", "venture card", "venturex", "venture x"]
+  base_multiplier: 2.0
+  category_multipliers:
+    personal.travel: 5.0
+  annual_caps_cents: {}
+  notes: "2x on everything; 5x flights/hotels booked via Capital One Travel."
+
+- name: "Discover It"
+  name_patterns: ["discover it", "discover card"]
+  base_multiplier: 1.0
+  category_multipliers: {}
+  annual_caps_cents: {}
+  notes: "5% rotating quarterly category (not modeled — varies); 1% base."

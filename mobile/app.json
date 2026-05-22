@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Finance",
+    "slug": "finance-app-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0b2a4a"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.chris.financeapp"
+    },
+    "android": {
+      "package": "com.chris.financeapp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "apiBaseUrl": "set via EXPO_PUBLIC_API_URL in .env"
+    }
+  }
+}

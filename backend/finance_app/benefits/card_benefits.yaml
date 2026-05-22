@@ -1,0 +1,185 @@
+# Card-benefit profiles for the "use it or lose it" tracker.
+#
+# Schema per card:
+#   name              : display name (must match a card in card_rewards.yaml
+#                       so the benefits show on the same card surface).
+#   name_patterns     : substrings on Account.name to match.
+#   annual_fee_cents  : the headline annual fee (post-first-year if waived).
+#   benefits          : list of benefit entries.
+#
+# Each benefit:
+#   name              : human label
+#   value_cents       : annual face value when fully used. null = "valuable
+#                       but $-amount varies" (e.g. trip cancellation insurance).
+#   reset             : "calendar_year" | "cardholder_year" | "monthly" |
+#                       "per_trip" | "lifetime" | "perpetual"
+#   how_to_use        : one-sentence instruction
+#   typical_redemption: where most people redeem (e.g. "Amex Travel portal")
+#
+# When tracking, we treat benefits with non-null value_cents as countable:
+# their use-rate vs. annual cap drives the dashboard ROI math.
+
+- name: "Chase Sapphire Reserve"
+  name_patterns: ["sapphire reserve", "csr"]
+  annual_fee_cents: 55000  # $550
+  benefits:
+    - name: "$300 annual travel credit"
+      value_cents: 30000
+      reset: cardholder_year
+      how_to_use: "Auto-applies to first $300 of travel each cardholder year."
+      typical_redemption: "Any 'travel' merchant — flights, hotels, rideshare, transit, parking."
+    - name: "Priority Pass Select lounge access"
+      value_cents: 46900
+      reset: lifetime
+      how_to_use: "Free $469/yr Priority Pass Select membership. Enroll once after card opening."
+      typical_redemption: "Airport lounges worldwide; PP app shows participating lounges."
+    - name: "TSA PreCheck / Global Entry credit"
+      value_cents: 10000
+      reset: every_4_years
+      how_to_use: "Apply for Global Entry ($100); pay with the card; statement credit auto-issues."
+      typical_redemption: "Apply at ttp.cbp.dhs.gov."
+    - name: "Trip cancellation/interruption insurance"
+      value_cents: null
+      reset: per_trip
+      how_to_use: "Pay full trip with card; up to $10k/person, $20k/trip reimbursed for covered cancellations."
+      typical_redemption: "File via Chase Visa Benefits portal."
+    - name: "Primary auto-rental CDW"
+      value_cents: null
+      reset: per_trip
+      how_to_use: "Decline the rental company's CDW; pay rental with card."
+      typical_redemption: "Up to $75k cap on damage/theft."
+    - name: "Doordash DashPass + monthly DD credit"
+      value_cents: 12000
+      reset: monthly
+      how_to_use: "Activate DashPass; $5/mo Doordash credit + $20/mo non-restaurant DashMart credit."
+      typical_redemption: "Doordash app — credits auto-apply at checkout."
+
+- name: "Chase Sapphire Preferred"
+  name_patterns: ["sapphire preferred", "csp"]
+  annual_fee_cents: 9500  # $95
+  benefits:
+    - name: "10% anniversary points bonus"
+      value_cents: null
+      reset: cardholder_year
+      how_to_use: "Earn 10% extra UR points on total purchases each cardholder year."
+      typical_redemption: "Auto-credited at anniversary."
+    - name: "$50 annual hotel credit (Chase Travel)"
+      value_cents: 5000
+      reset: cardholder_year
+      how_to_use: "Book any hotel via Chase Travel; auto-credits up to $50/year."
+      typical_redemption: "Chase Travel portal."
+
+- name: "Amex Platinum"
+  name_patterns: ["amex platinum", "platinum card"]
+  annual_fee_cents: 69500  # $695
+  benefits:
+    - name: "$200 annual airline incidental fee credit"
+      value_cents: 20000
+      reset: calendar_year
+      how_to_use: "Designate one airline; credit auto-applies to incidentals (not airfare)."
+      typical_redemption: "Inflight food, seat upgrades, lounge day passes, baggage fees."
+    - name: "$200 annual Uber credit"
+      value_cents: 20000
+      reset: calendar_year
+      how_to_use: "Linked Uber account gets $15/mo + $35 in December."
+      typical_redemption: "Uber + Uber Eats."
+    - name: "$200 annual hotel credit (FHR/THC)"
+      value_cents: 20000
+      reset: calendar_year
+      how_to_use: "Book at least 2 nights through Amex Fine Hotels & Resorts or The Hotel Collection."
+      typical_redemption: "Amex Travel."
+    - name: "$240 annual digital entertainment credit"
+      value_cents: 24000
+      reset: calendar_year
+      how_to_use: "Auto-applies to spending at Disney+, Hulu, ESPN+, NYT, Peacock, SiriusXM, WSJ, Audible. $20/mo."
+      typical_redemption: "Direct billing on those services."
+    - name: "$155 Walmart+ membership credit"
+      value_cents: 15500
+      reset: monthly
+      how_to_use: "Pay $12.95/mo Walmart+ subscription with card; full credit each month."
+      typical_redemption: "Walmart+ direct."
+    - name: "$300 Equinox credit"
+      value_cents: 30000
+      reset: calendar_year
+      how_to_use: "$25/mo applied to Equinox membership or Equinox+ digital."
+      typical_redemption: "Direct Equinox billing."
+    - name: "$189 CLEAR Plus credit"
+      value_cents: 18900
+      reset: calendar_year
+      how_to_use: "Reimburses up to $189/yr CLEAR Plus subscription."
+      typical_redemption: "Pay CLEAR with the card."
+    - name: "Centurion / Priority Pass / Delta Sky Club lounge access"
+      value_cents: null
+      reset: perpetual
+      how_to_use: "Enroll in Priority Pass; Centurion + DSC access on flight day."
+      typical_redemption: "All major hub lounges."
+    - name: "TSA PreCheck / Global Entry credit"
+      value_cents: 10000
+      reset: every_4_years
+      how_to_use: "Pay app fee with card; $100 statement credit."
+      typical_redemption: "ttp.cbp.dhs.gov."
+    - name: "Marriott + Hilton Gold status"
+      value_cents: null
+      reset: perpetual
+      how_to_use: "Enroll in each via the Amex app."
+      typical_redemption: "Auto-applied to bookings."
+
+- name: "Amex Gold"
+  name_patterns: ["amex gold", "american express gold", "gold card"]
+  annual_fee_cents: 32500  # $325
+  benefits:
+    - name: "$120 annual dining credit"
+      value_cents: 12000
+      reset: calendar_year
+      how_to_use: "$10/mo at Grubhub, Cheesecake Factory, Goldbelly, Wine.com, Five Guys, Shake Shack."
+      typical_redemption: "Linked accounts."
+    - name: "$120 annual Uber Cash"
+      value_cents: 12000
+      reset: monthly
+      how_to_use: "Linked Uber account gets $10/mo (rolls Dec only)."
+      typical_redemption: "Uber + Uber Eats."
+    - name: "$100 annual Resy credit"
+      value_cents: 10000
+      reset: calendar_year
+      how_to_use: "$50 in two semesters (Jan-Jun / Jul-Dec) at Resy partner restaurants."
+      typical_redemption: "Pay with the card at Resy-marked restaurants."
+    - name: "$84 Dunkin' annual credit"
+      value_cents: 8400
+      reset: monthly
+      how_to_use: "$7/mo at Dunkin' locations."
+      typical_redemption: "Direct purchases."
+
+- name: "Amex Blue Cash Preferred"
+  name_patterns: ["blue cash preferred", "amex bcp", "bcp"]
+  annual_fee_cents: 9500  # $95
+  benefits:
+    - name: "$84 Disney+ bundle credit"
+      value_cents: 8400
+      reset: monthly
+      how_to_use: "$7/mo when you pay for Disney+ / Hulu / ESPN+ bundle with card."
+      typical_redemption: "Direct billing."
+
+- name: "Capital One Venture X"
+  name_patterns: ["venture x", "venturex", "capital one venture x"]
+  annual_fee_cents: 39500  # $395
+  benefits:
+    - name: "$300 annual Capital One Travel credit"
+      value_cents: 30000
+      reset: cardholder_year
+      how_to_use: "Auto-applies to bookings via Capital One Travel."
+      typical_redemption: "C1 Travel portal."
+    - name: "10,000 anniversary bonus miles"
+      value_cents: 10000  # ~1¢ point baseline
+      reset: cardholder_year
+      how_to_use: "Auto-credited at anniversary."
+      typical_redemption: "Account bonus."
+    - name: "Priority Pass Select"
+      value_cents: 46900
+      reset: lifetime
+      how_to_use: "Enroll once; auto-renews."
+      typical_redemption: "PP lounges."
+    - name: "TSA PreCheck / Global Entry credit"
+      value_cents: 10000
+      reset: every_4_years
+      how_to_use: "Pay app fee with card; statement credit."
+      typical_redemption: "ttp.cbp.dhs.gov."

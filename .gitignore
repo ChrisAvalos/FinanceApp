@@ -1,0 +1,57 @@
+# ============================================================
+#  Finance App — .gitignore
+#  Repo is private, but secrets & financial data stay OUT of
+#  git history regardless (private repos can be shared/leaked).
+# ============================================================
+
+# ---- Secrets & credentials (NEVER commit) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+gmail_credentials.json
+gmail_token.json
+*service-account*.json
+
+# ---- Financial data (SQLite DBs, backups, digests) ----
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+backend/backups/
+backend/digest/
+
+# ---- Browser-automation auth state (cookies, screenshots, sessions) ----
+.auth_state/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Node / web / mobile ----
+node_modules/
+dist/
+build/
+.vite/
+.expo/
+*.tsbuildinfo
+
+# ---- Logs & OS cruft ----
+*.log
+.DS_Store
+Thumbs.db
+
+# ---- Editors ----
+.vscode/
+.idea/
+
+# ---- Superseded stub clone (safe to delete this folder) ----
+_github-public-repo/

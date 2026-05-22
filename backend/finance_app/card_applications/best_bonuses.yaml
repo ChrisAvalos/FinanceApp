@@ -1,0 +1,177 @@
+# Best current credit-card welcome bonuses.
+#
+# Curated by hand. The Card applications panel reads this and surfaces
+# the top N in a "consider applying for" sidebar. Update when the
+# bonuses move — it's just a YAML file.
+#
+# Fields per entry:
+#   card_name            display name on the card
+#   issuer               Chase / American Express / Capital One / etc.
+#   bonus_points         signup bonus in points / miles
+#   bonus_dollar_value   estimated cash-equivalent value in cents
+#   minimum_spend_cents  spend required to earn the bonus
+#   minimum_spend_months months allowed to hit the spend
+#   annual_fee_cents     first-year fee (waived where applicable)
+#   counts_toward_5_24   whether opening this card adds to the Chase 5/24 count
+#   chase_5_24_friendly  whether you'd be approved at <5/24 (Chase consumer cards: yes; most others: irrelevant)
+#   notes                short context — best use case, lifetime restrictions, etc.
+#   product_url          issuer's apply page (nofollow on the UI side)
+#
+# Updated: 2026-05-04. Each bonus is the "regularly available" one,
+# not a chase-the-elevated SignUpBonus tracker number — those move daily.
+
+- card_name: Chase Sapphire Preferred
+  issuer: Chase
+  bonus_points: 75000
+  bonus_dollar_value: 150000  # $1,500 via Chase Travel
+  minimum_spend_cents: 400000
+  minimum_spend_months: 3
+  annual_fee_cents: 9500
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: 60-100K is the floor; 100K elevated comes around once or twice a year. 10% anniversary points + $50 hotel credit.
+  product_url: https://www.chase.com/personal/credit-cards/sapphire-preferred
+
+- card_name: Chase Sapphire Reserve
+  issuer: Chase
+  bonus_points: 60000
+  bonus_dollar_value: 150000  # $1,500 via Chase Travel
+  minimum_spend_cents: 400000
+  minimum_spend_months: 3
+  annual_fee_cents: 55000
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: $300 annual travel credit + Priority Pass + 1.5x points multiplier on the 60K bonus.
+  product_url: https://www.chase.com/personal/credit-cards/sapphire-reserve
+
+- card_name: American Express Gold
+  issuer: American Express
+  bonus_points: 60000
+  bonus_dollar_value: 120000  # $1,200 via Amex Travel
+  minimum_spend_cents: 600000
+  minimum_spend_months: 6
+  annual_fee_cents: 32500
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: 4x dining + 4x grocery. $120 dining credit + $120 Uber Cash. Once-per-lifetime bonus.
+  product_url: https://www.americanexpress.com/us/credit-cards/card/gold-card/
+
+- card_name: American Express Platinum
+  issuer: American Express
+  bonus_points: 80000
+  bonus_dollar_value: 160000  # $1,600 via Amex Travel
+  minimum_spend_cents: 800000
+  minimum_spend_months: 6
+  annual_fee_cents: 69500
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: 5x flights + Centurion Lounge + Hotels collection. Watch the elevated 100-150K offers via referral.
+  product_url: https://www.americanexpress.com/us/credit-cards/card/platinum/
+
+- card_name: Capital One Venture X
+  issuer: Capital One
+  bonus_points: 75000
+  bonus_dollar_value: 150000  # $1,500 via Cap One Travel
+  minimum_spend_cents: 400000
+  minimum_spend_months: 3
+  annual_fee_cents: 39500
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: Best mid-tier travel card if you fly Air Canada / Singapore Airlines / Avianca (Cap One transfer partners). $300 Capital One Travel credit + 10K anniversary miles.
+  product_url: https://www.capitalone.com/credit-cards/venture-x/
+
+- card_name: Chase Ink Business Preferred
+  issuer: Chase
+  bonus_points: 90000
+  bonus_dollar_value: 180000  # $1,800 via Chase Travel
+  minimum_spend_cents: 800000
+  minimum_spend_months: 3
+  annual_fee_cents: 9500
+  counts_toward_5_24: false  # Business cards from Chase don't add to YOUR 5/24
+  chase_5_24_friendly: true
+  notes: Sole-prop is fine for "business" — Etsy / freelancing / 1099 work all qualify. 3x on first $150K/yr in select categories.
+  product_url: https://creditcards.chase.com/business-credit-cards/ink/business-preferred
+
+- card_name: American Express Business Gold
+  issuer: American Express
+  bonus_points: 70000
+  bonus_dollar_value: 140000
+  minimum_spend_cents: 1000000
+  minimum_spend_months: 3
+  annual_fee_cents: 37500
+  counts_toward_5_24: false
+  chase_5_24_friendly: true
+  notes: 4x on top 2 categories you spend most in. Pairs with Amex Plat for transfer-partner stacking.
+  product_url: https://www.americanexpress.com/us/credit-cards/business/business-gold-card/
+
+- card_name: Citi Strata Premier
+  issuer: Citi
+  bonus_points: 60000
+  bonus_dollar_value: 90000  # $900 via Citi Travel
+  minimum_spend_cents: 400000
+  minimum_spend_months: 3
+  annual_fee_cents: 9500
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: 10x hotels + 3x dining. ThankYou points transfer to Singapore / Wyndham / EVA.
+  product_url: https://www.citi.com/credit-cards/citi-strata-premier-credit-card
+
+- card_name: Wells Fargo Active Cash
+  issuer: Wells Fargo
+  bonus_points: 0  # cashback card
+  bonus_dollar_value: 20000  # $200 cash bonus
+  minimum_spend_cents: 50000
+  minimum_spend_months: 3
+  annual_fee_cents: 0
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: Flat 2% cashback, no annual fee. Easy churn — low spend req, $0 fee. Good for putting bills on.
+  product_url: https://www.wellsfargo.com/credit-cards/active-cash/
+
+- card_name: Citi Double Cash
+  issuer: Citi
+  bonus_points: 0
+  bonus_dollar_value: 20000  # $200
+  minimum_spend_cents: 150000
+  minimum_spend_months: 6
+  annual_fee_cents: 0
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: Flat 2% (1% buy + 1% pay). The "set it and forget it" baseline cashback card. Convertible to ThankYou points if you also have Strata Premier.
+  product_url: https://www.citi.com/credit-cards/citi-double-cash-credit-card
+
+- card_name: Chase Freedom Unlimited
+  issuer: Chase
+  bonus_points: 20000  # 200 in cash equivalent — Chase calls these "$200 + 5% on grocery" offers
+  bonus_dollar_value: 20000
+  minimum_spend_cents: 50000
+  minimum_spend_months: 3
+  annual_fee_cents: 0
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: 1.5% baseline + 5% groceries first year. Pairs with Sapphire Reserve to convert cashback → UR points.
+  product_url: https://creditcards.chase.com/cash-back-credit-cards/freedom/unlimited
+
+- card_name: Bilt Mastercard
+  issuer: Wells Fargo (issued for Bilt)
+  bonus_points: 0  # no signup bonus
+  bonus_dollar_value: 0
+  minimum_spend_cents: 0
+  minimum_spend_months: 0
+  annual_fee_cents: 0
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: No signup bonus, but pay rent with credit card — no fee, earn 1x on rent. Transfer partners include Hyatt, United, Air France. Worth opening for the rent-points feature alone.
+  product_url: https://www.biltrewards.com/credit-card
+
+- card_name: Capital One Savor
+  issuer: Capital One
+  bonus_points: 0
+  bonus_dollar_value: 30000  # $300
+  minimum_spend_cents: 300000
+  minimum_spend_months: 3
+  annual_fee_cents: 0
+  counts_toward_5_24: true
+  chase_5_24_friendly: true
+  notes: Free version (was Savor One). 3% dining + groceries + entertainment. Solid no-fee daily driver.
+  product_url: https://www.capitalone.com/credit-cards/savorone-rewards/

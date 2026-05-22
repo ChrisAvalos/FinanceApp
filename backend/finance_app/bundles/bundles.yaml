@@ -1,0 +1,185 @@
+# Bundle knowledge base — Wave E.
+#
+# Each entry describes a "parent" subscription (an ISP, cellular plan,
+# cable, premium card, etc.) that bundles in one or more "perks" — perks
+# being other things (typically streaming services) the user might
+# *also* be paying for separately.
+#
+# The detector runs after subscription detection. For each entry, it
+# looks for the parent merchant in the user's active Subscription rows.
+# If found, it then looks for any perk merchant in active Subs. If both
+# are present, it flags the perk as "duplicate-paid" (you're paying for
+# it via the parent bundle AND directly to the perk vendor).
+#
+# Tier dependence — most ISPs only bundle premium streaming on their
+# higher tiers. We capture this two ways:
+#   1. `bill_range_cents` — observed monthly-bill range that includes
+#      the perk. The detector compares the user's actual parent-bill
+#      amount against this range to assign confidence.
+#   2. `tier_note` — human-readable description for the UI ("Unlimited
+#      line"). When Wave E-6 ships the Xfinity scraper, we'll layer
+#      real plan-tier data over this heuristic.
+#
+# Source pricing (perk_value_cents) reflects standalone monthly cost
+# at the time of authoring. Update annually or when vendors hike.
+# Last updated: 2026-05-07.
+
+- provider: xfinity_mobile
+  parent_label: "Xfinity Mobile"
+  # Substring match (case-insensitive) against Subscription.name. Pattern
+  # must be specific enough to avoid matching Xfinity Internet.
+  match_patterns: ["xfinity mobile", "xfinity wireless"]
+  perks:
+    - merchant: peacock
+      match_patterns: ["peacock", "peacock tv"]
+      perk_name: "Peacock Premium"
+      perk_value_cents: 1499                       # $14.99/mo standalone, late 2025 onward
+      tier_note: "Any Xfinity Mobile Unlimited line"
+      bill_range_cents: [3500, 8000]               # $35-$80/mo typical Unlimited Single/Family line
+      activation_url: "https://www.xfinity.com/learn/peacock"
+  notes:
+    - "Xfinity Mobile Unlimited lines have included Peacock Premium since 2024."
+    - "Verify your specific plan at xfinity.com → My Account → Plan details before cancelling Peacock standalone."
+
+- provider: xfinity_internet
+  parent_label: "Xfinity Internet"
+  match_patterns: ["xfinity internet", "comcast cable", "comcast internet", "xfinity gigabit"]
+  perks:
+    - merchant: peacock
+      match_patterns: ["peacock", "peacock tv"]
+      perk_name: "Peacock Premium"
+      perk_value_cents: 1499
+      tier_note: "Gigabit Extra and higher"
+      bill_range_cents: [9000, 20000]              # $90+/mo typical Gigabit tier
+      activation_url: "https://www.xfinity.com/learn/peacock"
+  notes:
+    - "Xfinity Internet Gigabit Extra ($90/mo and up) bundles Peacock Premium."
+    - "Lower-tier Xfinity plans do NOT include Peacock — verify your tier."
+
+- provider: verizon_wireless
+  parent_label: "Verizon"
+  match_patterns: ["verizon wireless", "verizon vzw", "vzwrlss"]
+  perks:
+    - merchant: disney_plus
+      match_patterns: ["disney plus", "disney+", "disneyplus"]
+      perk_name: "Disney+ (with ads)"
+      perk_value_cents: 999                        # $9.99/mo standalone with ads
+      tier_note: "Unlimited Plus and Unlimited Ultimate"
+      bill_range_cents: [8000, 25000]
+      activation_url: "https://www.verizon.com/plans/disney-plus-bundle/"
+    - merchant: hulu
+      match_patterns: ["hulu"]
+      perk_name: "Hulu (with ads)"
+      perk_value_cents: 999
+      tier_note: "Disney Bundle on Unlimited Ultimate"
+      bill_range_cents: [9000, 25000]
+      activation_url: "https://www.verizon.com/plans/disney-plus-bundle/"
+    - merchant: espn_plus
+      match_patterns: ["espn plus", "espn+"]
+      perk_name: "ESPN+"
+      perk_value_cents: 1099
+      tier_note: "Disney Bundle on Unlimited Ultimate"
+      bill_range_cents: [9000, 25000]
+      activation_url: "https://www.verizon.com/plans/disney-plus-bundle/"
+    - merchant: apple_music
+      match_patterns: ["apple music"]
+      perk_name: "Apple Music"
+      perk_value_cents: 1099
+      tier_note: "Unlimited Plus and Unlimited Ultimate"
+      bill_range_cents: [8000, 25000]
+      activation_url: "https://www.verizon.com/plans/apple-music/"
+  notes:
+    - "Verizon Unlimited Plus ($80/line, lower with multi-line) and Unlimited Ultimate ($100/line) include perks."
+    - "Disney Bundle (Disney+/Hulu/ESPN+) only on Ultimate; Disney+ alone is on Plus."
+
+- provider: t_mobile
+  parent_label: "T-Mobile"
+  match_patterns: ["t-mobile", "tmobile", "t mobile"]
+  perks:
+    - merchant: netflix
+      match_patterns: ["netflix"]
+      perk_name: "Netflix Basic / Standard"
+      perk_value_cents: 1549                       # Standard $15.49/mo; Basic phased out
+      tier_note: "Magenta MAX and Go5G Plus/Next"
+      bill_range_cents: [8000, 25000]
+      activation_url: "https://www.t-mobile.com/offers/netflix-on-us"
+    - merchant: apple_tv_plus
+      match_patterns: ["apple tv plus", "apple tv+"]
+      perk_name: "Apple TV+"
+      perk_value_cents: 999
+      tier_note: "Go5G Next"
+      bill_range_cents: [10000, 25000]
+      activation_url: "https://www.t-mobile.com/offers/apple-tv-plus"
+  notes:
+    - "T-Mobile Magenta MAX → Netflix Basic; Go5G Plus → Netflix Standard; Go5G Next → Netflix Standard + Apple TV+."
+    - "Older Magenta plans only include Netflix Basic — Standard tier may still cost extra."
+
+- provider: att_wireless
+  parent_label: "AT&T"
+  match_patterns: ["at&t mobility", "at&t wireless", "att mobility"]
+  perks:
+    - merchant: hbo_max
+      match_patterns: ["hbo max", "max ", "warner bros discovery", "wbd "]
+      perk_name: "Max (formerly HBO Max)"
+      perk_value_cents: 1699                       # Max Standard $16.99/mo
+      tier_note: "AT&T Unlimited Premium / Premium PL"
+      bill_range_cents: [8000, 25000]
+      activation_url: "https://www.att.com/features/hbo-max.html"
+  notes:
+    - "AT&T Unlimited Premium and Premium PL include Max with ads."
+    - "Lower AT&T tiers do NOT include Max — verify your specific plan."
+
+- provider: spectrum
+  parent_label: "Spectrum"
+  match_patterns: ["spectrum", "charter communications", "charter cable"]
+  perks:
+    - merchant: disney_plus
+      match_patterns: ["disney plus", "disney+", "disneyplus"]
+      perk_name: "Disney+ Basic"
+      perk_value_cents: 999
+      tier_note: "Spectrum TV Select and higher"
+      bill_range_cents: [6000, 20000]
+      activation_url: "https://www.spectrum.com/cable-tv/disney-plus"
+    - merchant: espn_plus
+      match_patterns: ["espn plus", "espn+"]
+      perk_name: "ESPN+"
+      perk_value_cents: 1099
+      tier_note: "Spectrum TV Select Plus and higher"
+      bill_range_cents: [8000, 20000]
+      activation_url: "https://www.spectrum.com/cable-tv/espn-plus"
+  notes:
+    - "Spectrum bundles Disney+ Basic with most TV packages and ESPN+ with the higher tiers."
+
+- provider: amazon_prime
+  parent_label: "Amazon Prime"
+  match_patterns: ["amazon prime", "amzn prime", "amazon.com*prime"]
+  perks:
+    - merchant: amazon_music
+      match_patterns: ["amazon music unlimited", "amzn music"]
+      perk_name: "Amazon Music (Prime tier)"
+      perk_value_cents: 0                          # Prime tier free for Prime members; Unlimited is paid
+      tier_note: "Prime members get free Music Prime — Unlimited tier is separate"
+      bill_range_cents: [1399, 1499]               # $139/yr or $14.99/mo
+      activation_url: "https://www.amazon.com/music/prime"
+  notes:
+    - "Prime members get Music Prime (200M songs, ad-free) FREE."
+    - "Music Unlimited (full library) is $9.99/mo for Prime members and is NOT bundled."
+
+# Premium credit card "free streaming" perks. These behave like
+# bundles even though the parent is a card not a recurring bill —
+# user pays the card annual fee, gets the streaming for free.
+- provider: chase_sapphire_preferred
+  parent_label: "Chase Sapphire Preferred"
+  match_patterns: []  # Card-tied; matched via account.card_profile_override, not subscription name
+  card_profiles: ["chase_sapphire_preferred"]
+  perks:
+    - merchant: doordash_dashpass
+      match_patterns: ["doordash dashpass", "dashpass"]
+      perk_name: "DashPass (1 year free)"
+      perk_value_cents: 999
+      tier_note: "Free for cardholders through 2027"
+      bill_range_cents: [9500, 9500]               # CSP annual fee $95
+      activation_url: "https://www.chase.com/personal/credit-cards/sapphire-preferred"
+  notes:
+    - "Chase Sapphire Preferred / Reserve / Ink cardholders get 1 year of complimentary DashPass."
+    - "Activate via Chase Offers or DashPass settings — must be linked manually."

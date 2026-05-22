@@ -1,0 +1,534 @@
+# Seed rules loaded by finance_app.db.seed.
+# Patterns are case-insensitive substrings by default. Set is_regex: true for regex.
+# Priority is high→low; first match wins.
+# Category slugs must exist in CATEGORY_SEED (db/seed.py).
+
+# --- Coffee ---
+- { name: "Starbucks", pattern: "STARBUCKS", category: "food.coffee", priority: 200 }
+- { name: "Philz", pattern: "PHILZ", category: "food.coffee", priority: 200 }
+- { name: "Peet's", pattern: "PEET", category: "food.coffee", priority: 200 }
+- { name: "Blue Bottle", pattern: "BLUE BOTTLE", category: "food.coffee", priority: 200 }
+
+# --- Groceries ---
+- { name: "Whole Foods", pattern: "WHOLE FOODS", category: "food.groceries", priority: 200 }
+- { name: "Trader Joe's", pattern: "TRADER JOE", category: "food.groceries", priority: 200 }
+- { name: "Safeway", pattern: "SAFEWAY", category: "food.groceries", priority: 200 }
+- { name: "Costco", pattern: "COSTCO", category: "food.groceries", priority: 200 }
+- { name: "Kroger", pattern: "KROGER", category: "food.groceries", priority: 200 }
+- { name: "Sprouts", pattern: "SPROUTS", category: "food.groceries", priority: 200 }
+
+# --- Food delivery / restaurants ---
+- { name: "DoorDash", pattern: "DOORDASH", category: "food.delivery", priority: 200 }
+- { name: "Uber Eats", pattern: "UBER EATS", category: "food.delivery", priority: 200 }
+- { name: "Grubhub", pattern: "GRUBHUB", category: "food.delivery", priority: 200 }
+- { name: "Chipotle", pattern: "CHIPOTLE", category: "food.restaurants", priority: 190 }
+- { name: "McDonald's", pattern: "MCDONALD", category: "food.restaurants", priority: 190 }
+- { name: "In-N-Out", pattern: "IN-N-OUT", category: "food.restaurants", priority: 190 }
+# Generic dining patterns (added 2026-04-27 — first UI test pass left
+# Tartine, Hog Island, etc. uncategorized).
+- { name: "Tartine", pattern: "TARTINE", category: "food.restaurants", priority: 190 }
+- { name: "Hog Island", pattern: "HOG ISLAND", category: "food.restaurants", priority: 190 }
+- { name: "Generic bakery", pattern: "BAKERY", category: "food.restaurants", priority: 150 }
+- { name: "Generic oyster bar", pattern: "OYSTER", category: "food.restaurants", priority: 150 }
+- { name: "Generic restaurant tag", pattern: "RESTAURANT", category: "food.restaurants", priority: 140 }
+
+# --- Transport ---
+- { name: "Uber", pattern: "^UBER(?!.*EATS)", is_regex: true, category: "transport.rideshare", priority: 200 }
+- { name: "Lyft", pattern: "LYFT", category: "transport.rideshare", priority: 200 }
+- { name: "Shell Gas (oil)", pattern: "SHELL OIL", category: "transport.gas", priority: 200 }
+# Catches "SHELL GAS STATION" and similar — added 2026-04-27.
+- { name: "Shell Gas (station)", pattern: "SHELL GAS", category: "transport.gas", priority: 200 }
+- { name: "Chevron", pattern: "CHEVRON", category: "transport.gas", priority: 200 }
+- { name: "76 Gas", pattern: "76 GAS", category: "transport.gas", priority: 200 }
+- { name: "Arco", pattern: "ARCO", category: "transport.gas", priority: 200 }
+- { name: "ExxonMobil", pattern: "EXXON|MOBIL", is_regex: true, category: "transport.gas", priority: 200 }
+- { name: "BART", pattern: "BART", category: "transport.public_transit", priority: 200 }
+- { name: "FasTrak", pattern: "FASTRAK", category: "transport.parking", priority: 200 }
+
+# --- Streaming subscriptions ---
+- { name: "Netflix", pattern: "NETFLIX", category: "subscriptions.streaming", priority: 220 }
+- { name: "Spotify", pattern: "SPOTIFY", category: "subscriptions.streaming", priority: 220 }
+- { name: "Apple (generic)", pattern: "APPLE.COM/BILL", category: "subscriptions.software", priority: 220 }
+- { name: "Hulu", pattern: "HULU", category: "subscriptions.streaming", priority: 220 }
+- { name: "Disney+", pattern: "DISNEY PLUS", category: "subscriptions.streaming", priority: 220 }
+- { name: "HBO Max", pattern: "HBO MAX", category: "subscriptions.streaming", priority: 220 }
+- { name: "Max (HBO)", pattern: "MAX.COM", category: "subscriptions.streaming", priority: 220 }
+- { name: "Peacock", pattern: "PEACOCK", category: "subscriptions.streaming", priority: 220 }
+- { name: "YouTube Premium", pattern: "YOUTUBE", category: "subscriptions.streaming", priority: 210 }
+- { name: "Amazon Prime", pattern: "AMZN PRIME", category: "subscriptions.streaming", priority: 220 }
+
+# --- Internet / utilities ---
+- { name: "Xfinity", pattern: "XFINITY", category: "housing.internet", priority: 220 }
+- { name: "Comcast", pattern: "COMCAST", category: "housing.internet", priority: 220 }
+- { name: "AT&T", pattern: "AT&T", category: "housing.utilities", priority: 210 }
+- { name: "PG&E", pattern: "PG&E", category: "housing.utilities", priority: 220 }
+- { name: "T-Mobile", pattern: "T-MOBILE", category: "housing.utilities", priority: 210 }
+- { name: "Verizon", pattern: "VERIZON", category: "housing.utilities", priority: 210 }
+
+# --- Health / fitness ---
+- { name: "CVS", pattern: "CVS", category: "health.pharmacy", priority: 200 }
+- { name: "Walgreens", pattern: "WALGREENS", category: "health.pharmacy", priority: 200 }
+- { name: "Planet Fitness", pattern: "PLANET FITNESS", category: "health.fitness", priority: 210 }
+- { name: "Peloton", pattern: "PELOTON", category: "health.fitness", priority: 210 }
+
+# --- Shopping ---
+- { name: "Amazon", pattern: "AMAZON|AMZN", is_regex: true, category: "shopping.online", priority: 180 }
+- { name: "Target", pattern: "TARGET", category: "shopping.household", priority: 180 }
+- { name: "Walmart", pattern: "WALMART", category: "shopping.household", priority: 180 }
+- { name: "Home Depot", pattern: "HOME DEPOT", category: "housing.home_improvement", priority: 200 }
+# Added 2026-04-27 — these were Uncategorized in the first UI test pass.
+- { name: "Apple Store", pattern: "APPLE STORE", category: "shopping.electronics", priority: 220 }
+- { name: "Best Buy", pattern: "BEST BUY", category: "shopping.electronics", priority: 200 }
+- { name: "REI", pattern: "REI #|REI STORE|REI.COM", is_regex: true, category: "shopping.household", priority: 200 }
+- { name: "Sephora", pattern: "SEPHORA", category: "shopping.clothing", priority: 200 }
+- { name: "Nordstrom", pattern: "NORDSTROM", category: "shopping.clothing", priority: 200 }
+
+# --- Housing ---
+# Generic rent/lease patterns. Priority high so this beats catch-alls.
+# Added 2026-04-27 — RENT - APT 412 was Uncategorized in the test seed.
+- { name: "Rent (generic)", pattern: "^RENT|RENT - APT|RENT/LEASE|MONTHLY RENT", is_regex: true, category: "housing.rent_mortgage", priority: 230 }
+- { name: "Mortgage (generic)", pattern: "MORTGAGE PYMT|MORTGAGE PAYMENT", is_regex: true, category: "housing.rent_mortgage", priority: 230 }
+
+# --- Financial ---
+- { name: "Chase Payment", pattern: "AUTOMATIC PAYMENT", category: "financial.payment", priority: 250 }
+- { name: "Credit Card Payment", pattern: "PAYMENT THANK YOU", category: "financial.payment", priority: 250 }
+- { name: "Interest Charge", pattern: "INTEREST CHARGE", category: "financial.interest", priority: 240 }
+- { name: "ATM Fee", pattern: "ATM FEE", category: "financial.fees", priority: 240 }
+- { name: "Zelle Transfer", pattern: "ZELLE", category: "financial.transfer", priority: 220 }
+- { name: "Venmo", pattern: "VENMO", category: "financial.transfer", priority: 220 }
+
+# --- Income ---
+- { name: "Payroll Deposit", pattern: "PAYROLL", category: "income.salary", priority: 240 }
+- { name: "Direct Deposit", pattern: "DIRECT DEP", category: "income.salary", priority: 230 }
+- { name: "Tax Refund", pattern: "IRS TREAS", category: "income.refund", priority: 240 }
+
+# ============================================================================
+# Phase 2 polish expansion (2026-04-27): bulk-add national chains + common
+# Plaid-formatted merchant strings to lift the categorization hit rate on
+# real production data. Bias toward high-volume merchants you'd see in any
+# US bank statement; long-tail / hyperlocal merchants stay user-defined.
+#
+# Pattern guidance:
+#   - Plain string = case-insensitive substring match. Default for chain names.
+#   - is_regex: true = full Python regex. Use when a chain has a common-word
+#     name that needs anchoring (e.g. "TARGET" alone is fine substring; "GAP"
+#     would be too short — needs ^GAP\b style).
+#   - priority 220+ = strong/specific (Netflix, Apple Store).
+#   - priority 180-200 = standard chain matches (most rules below).
+#   - priority 130-160 = very generic regex catch-alls (BAKERY, RESTAURANT,
+#     ELECTRIC). They should always be lower than specific rules so a
+#     "WALGREENS PHARMACY" hits Walgreens, not "Generic pharmacy".
+# ============================================================================
+
+# --- Coffee (chains) ---
+- { name: "Dunkin", pattern: "DUNKIN", category: "food.coffee", priority: 200 }
+- { name: "Tim Hortons", pattern: "TIM HORTONS", category: "food.coffee", priority: 200 }
+- { name: "La Colombe", pattern: "LA COLOMBE", category: "food.coffee", priority: 200 }
+- { name: "Coffee Bean & Tea Leaf", pattern: "COFFEE BEAN", category: "food.coffee", priority: 200 }
+- { name: "Caribou Coffee", pattern: "CARIBOU COFFEE", category: "food.coffee", priority: 200 }
+- { name: "Generic coffeehouse", pattern: "COFFEE", category: "food.coffee", priority: 130 }
+
+# --- Groceries (chains) ---
+- { name: "Aldi", pattern: "ALDI", category: "food.groceries", priority: 200 }
+- { name: "H-E-B", pattern: "H-E-B|HEB GROCERY", is_regex: true, category: "food.groceries", priority: 200 }
+- { name: "Publix", pattern: "PUBLIX", category: "food.groceries", priority: 200 }
+- { name: "Albertsons", pattern: "ALBERTSONS", category: "food.groceries", priority: 200 }
+- { name: "Food Lion", pattern: "FOOD LION", category: "food.groceries", priority: 200 }
+- { name: "Wegmans", pattern: "WEGMANS", category: "food.groceries", priority: 200 }
+- { name: "Stop & Shop", pattern: "STOP & SHOP|STOP AND SHOP", is_regex: true, category: "food.groceries", priority: 200 }
+- { name: "Giant Food", pattern: "GIANT FOOD", category: "food.groceries", priority: 200 }
+- { name: "ShopRite", pattern: "SHOPRITE", category: "food.groceries", priority: 200 }
+- { name: "Ralphs", pattern: "RALPHS", category: "food.groceries", priority: 200 }
+- { name: "Vons", pattern: "VONS", category: "food.groceries", priority: 200 }
+- { name: "Lucky / Save Mart", pattern: "LUCKY SUPERMARKET|SAVE MART", is_regex: true, category: "food.groceries", priority: 200 }
+- { name: "Andronico's", pattern: "ANDRONICO", category: "food.groceries", priority: 200 }
+- { name: "Berkeley Bowl", pattern: "BERKELEY BOWL", category: "food.groceries", priority: 200 }
+- { name: "Bi-Rite", pattern: "BI-RITE", category: "food.groceries", priority: 200 }
+- { name: "Instacart", pattern: "INSTACART", category: "food.groceries", priority: 200 }
+
+# --- Restaurants (chains) ---
+- { name: "Panera", pattern: "PANERA", category: "food.restaurants", priority: 190 }
+- { name: "Five Guys", pattern: "FIVE GUYS", category: "food.restaurants", priority: 190 }
+- { name: "Shake Shack", pattern: "SHAKE SHACK", category: "food.restaurants", priority: 190 }
+- { name: "Cava", pattern: "CAVA MEZZE|CAVA GRILL|CAVA #", is_regex: true, category: "food.restaurants", priority: 190 }
+- { name: "Sweetgreen", pattern: "SWEETGREEN", category: "food.restaurants", priority: 190 }
+- { name: "Subway", pattern: "SUBWAY", category: "food.restaurants", priority: 190 }
+- { name: "Wendy's", pattern: "WENDY", category: "food.restaurants", priority: 190 }
+- { name: "Burger King", pattern: "BURGER KING", category: "food.restaurants", priority: 190 }
+- { name: "Taco Bell", pattern: "TACO BELL", category: "food.restaurants", priority: 190 }
+- { name: "KFC", pattern: "KFC|KENTUCKY FRIED", is_regex: true, category: "food.restaurants", priority: 190 }
+- { name: "Popeyes", pattern: "POPEYES", category: "food.restaurants", priority: 190 }
+- { name: "Chick-fil-A", pattern: "CHICK-FIL-A|CHICK FIL A", is_regex: true, category: "food.restaurants", priority: 190 }
+- { name: "Panda Express", pattern: "PANDA EXPRESS", category: "food.restaurants", priority: 190 }
+- { name: "Olive Garden", pattern: "OLIVE GARDEN", category: "food.restaurants", priority: 190 }
+- { name: "Cheesecake Factory", pattern: "CHEESECAKE FACTORY", category: "food.restaurants", priority: 190 }
+- { name: "Applebee's", pattern: "APPLEBEE", category: "food.restaurants", priority: 190 }
+- { name: "Outback Steakhouse", pattern: "OUTBACK STEAK", category: "food.restaurants", priority: 190 }
+- { name: "Buffalo Wild Wings", pattern: "BUFFALO WILD", category: "food.restaurants", priority: 190 }
+- { name: "Domino's", pattern: "DOMINOS", category: "food.restaurants", priority: 190 }
+- { name: "Pizza Hut", pattern: "PIZZA HUT", category: "food.restaurants", priority: 190 }
+- { name: "Papa John's", pattern: "PAPA JOHN", category: "food.restaurants", priority: 190 }
+- { name: "Generic pizzeria", pattern: "PIZZA", category: "food.restaurants", priority: 140 }
+- { name: "Generic cafe", pattern: "CAFE|CAFÉ", is_regex: true, category: "food.restaurants", priority: 140 }
+- { name: "Generic grill / steakhouse", pattern: "STEAK ?HOUSE|GRILLE\\b", is_regex: true, category: "food.restaurants", priority: 140 }
+
+# --- Delivery / takeout aggregators ---
+- { name: "Postmates", pattern: "POSTMATES", category: "food.delivery", priority: 200 }
+- { name: "Caviar", pattern: "CAVIAR", category: "food.delivery", priority: 200 }
+- { name: "Seamless", pattern: "SEAMLESS", category: "food.delivery", priority: 200 }
+- { name: "ezCater", pattern: "EZCATER", category: "food.delivery", priority: 200 }
+
+# --- Gas stations (additional) ---
+- { name: "BP", pattern: "\\bBP\\s|BP GAS|BP OIL", is_regex: true, category: "transport.gas", priority: 200 }
+- { name: "Valero", pattern: "VALERO", category: "transport.gas", priority: 200 }
+- { name: "Costco Gas", pattern: "COSTCO GAS", category: "transport.gas", priority: 210 }
+- { name: "Speedway", pattern: "SPEEDWAY", category: "transport.gas", priority: 200 }
+- { name: "Sunoco", pattern: "SUNOCO", category: "transport.gas", priority: 200 }
+- { name: "Phillips 66", pattern: "PHILLIPS 66", category: "transport.gas", priority: 200 }
+- { name: "Marathon", pattern: "MARATHON PETRO|MARATHON GAS", is_regex: true, category: "transport.gas", priority: 200 }
+- { name: "Circle K", pattern: "CIRCLE K", category: "transport.gas", priority: 200 }
+- { name: "Wawa", pattern: "WAWA", category: "transport.gas", priority: 200 }
+- { name: "QuikTrip", pattern: "QUIKTRIP|QT GAS", is_regex: true, category: "transport.gas", priority: 200 }
+- { name: "7-Eleven", pattern: "7-ELEVEN|7 ELEVEN", is_regex: true, category: "transport.gas", priority: 180 }
+
+# --- Rideshare / transport (additional) ---
+- { name: "Curb (taxi)", pattern: "\\bCURB\\b.*RIDE", is_regex: true, category: "transport.rideshare", priority: 200 }
+- { name: "Revel", pattern: "REVEL TRANSIT|REVEL RIDE", is_regex: true, category: "transport.rideshare", priority: 200 }
+
+# --- Public transit ---
+- { name: "MTA / NYC Subway", pattern: "MTA NYCT|METROCARD|NYCT PAYGO", is_regex: true, category: "transport.public_transit", priority: 200 }
+- { name: "MUNI / SF", pattern: "SFMTA|SF MUNI", is_regex: true, category: "transport.public_transit", priority: 200 }
+- { name: "Caltrain", pattern: "CALTRAIN", category: "transport.public_transit", priority: 200 }
+- { name: "Metro (LA)", pattern: "LA METRO|LACMTA", is_regex: true, category: "transport.public_transit", priority: 200 }
+- { name: "WMATA / DC Metro", pattern: "WMATA", category: "transport.public_transit", priority: 200 }
+- { name: "CTA Chicago", pattern: "CTA TRANSIT|VENTRA", is_regex: true, category: "transport.public_transit", priority: 200 }
+- { name: "Septa Philly", pattern: "SEPTA", category: "transport.public_transit", priority: 200 }
+- { name: "NJ Transit", pattern: "NJ TRANSIT|NJTRANSIT", is_regex: true, category: "transport.public_transit", priority: 200 }
+- { name: "Amtrak", pattern: "AMTRAK", category: "transport.public_transit", priority: 200 }
+
+# --- Auto insurance ---
+- { name: "GEICO", pattern: "GEICO", category: "transport.insurance", priority: 220 }
+- { name: "State Farm", pattern: "STATE FARM", category: "transport.insurance", priority: 220 }
+- { name: "Progressive", pattern: "PROGRESSIVE INS|PROGRESSIVE INSURANCE", is_regex: true, category: "transport.insurance", priority: 220 }
+- { name: "Allstate", pattern: "ALLSTATE", category: "transport.insurance", priority: 220 }
+- { name: "Liberty Mutual", pattern: "LIBERTY MUTUAL", category: "transport.insurance", priority: 220 }
+- { name: "USAA Auto", pattern: "USAA", category: "transport.insurance", priority: 200 }
+- { name: "Farmers Insurance", pattern: "FARMERS INS", category: "transport.insurance", priority: 220 }
+- { name: "Nationwide", pattern: "NATIONWIDE INS", category: "transport.insurance", priority: 220 }
+
+# --- Parking / tolls ---
+- { name: "EZ Pass", pattern: "EZPASS|EZ PASS|E-ZPASS", is_regex: true, category: "transport.parking", priority: 200 }
+- { name: "ParkMobile", pattern: "PARKMOBILE", category: "transport.parking", priority: 200 }
+- { name: "SpotHero", pattern: "SPOTHERO", category: "transport.parking", priority: 200 }
+- { name: "ParkWhiz", pattern: "PARKWHIZ", category: "transport.parking", priority: 200 }
+- { name: "Generic parking lot", pattern: "PARKING LOT|PARKING GARAGE", is_regex: true, category: "transport.parking", priority: 150 }
+
+# --- Pharmacy ---
+- { name: "Rite Aid", pattern: "RITE AID", category: "health.pharmacy", priority: 200 }
+- { name: "Duane Reade", pattern: "DUANE READE", category: "health.pharmacy", priority: 200 }
+- { name: "Generic pharmacy tag", pattern: "PHARMACY", category: "health.pharmacy", priority: 140 }
+
+# --- Medical ---
+- { name: "Quest Diagnostics", pattern: "QUEST DIAG", category: "health.medical", priority: 210 }
+- { name: "LabCorp", pattern: "LABCORP", category: "health.medical", priority: 210 }
+- { name: "Kaiser", pattern: "KAISER PERM|KAISER FOUND", is_regex: true, category: "health.medical", priority: 210 }
+- { name: "One Medical", pattern: "ONE MEDICAL", category: "health.medical", priority: 210 }
+- { name: "Teladoc", pattern: "TELADOC", category: "health.medical", priority: 210 }
+- { name: "Generic clinic / hospital", pattern: "CLINIC|HOSPITAL|MEDICAL CENTER", is_regex: true, category: "health.medical", priority: 140 }
+- { name: "Generic dental", pattern: "DENTAL|DENTIST", is_regex: true, category: "health.medical", priority: 140 }
+
+# --- Fitness ---
+- { name: "Equinox", pattern: "EQUINOX", category: "health.fitness", priority: 210 }
+- { name: "LA Fitness", pattern: "LA FITNESS", category: "health.fitness", priority: 210 }
+- { name: "24 Hour Fitness", pattern: "24 HOUR FITNESS", category: "health.fitness", priority: 210 }
+- { name: "Crunch Fitness", pattern: "CRUNCH FITNESS", category: "health.fitness", priority: 210 }
+- { name: "SoulCycle", pattern: "SOULCYCLE", category: "health.fitness", priority: 210 }
+- { name: "Barry's Bootcamp", pattern: "BARRYS BOOT", category: "health.fitness", priority: 210 }
+- { name: "Orangetheory", pattern: "ORANGETHEORY|ORANGE THEORY", is_regex: true, category: "health.fitness", priority: 210 }
+- { name: "Pure Barre", pattern: "PURE BARRE", category: "health.fitness", priority: 210 }
+- { name: "ClassPass", pattern: "CLASSPASS", category: "health.fitness", priority: 210 }
+- { name: "Y / YMCA", pattern: "YMCA", category: "health.fitness", priority: 200 }
+- { name: "Generic gym tag", pattern: "GYM\\b|FITNESS CENTER", is_regex: true, category: "health.fitness", priority: 140 }
+
+# --- Streaming (additional) ---
+- { name: "Paramount+", pattern: "PARAMOUNT\\+|PARAMOUNT PLUS", is_regex: true, category: "subscriptions.streaming", priority: 220 }
+- { name: "Apple Music", pattern: "APPLE MUSIC", category: "subscriptions.streaming", priority: 220 }
+- { name: "Apple TV+", pattern: "APPLE TV\\+|APPLE TV PLUS", is_regex: true, category: "subscriptions.streaming", priority: 220 }
+- { name: "Crunchyroll", pattern: "CRUNCHYROLL", category: "subscriptions.streaming", priority: 220 }
+- { name: "Tidal", pattern: "TIDAL\\.COM|TIDAL MUSIC", is_regex: true, category: "subscriptions.streaming", priority: 220 }
+- { name: "Pandora", pattern: "PANDORA", category: "subscriptions.streaming", priority: 220 }
+- { name: "Discovery+", pattern: "DISCOVERY\\+|DISCOVERYPLUS", is_regex: true, category: "subscriptions.streaming", priority: 220 }
+- { name: "BritBox", pattern: "BRITBOX", category: "subscriptions.streaming", priority: 220 }
+- { name: "ESPN+", pattern: "ESPN\\+|ESPNPLUS", is_regex: true, category: "subscriptions.streaming", priority: 220 }
+- { name: "Showtime", pattern: "SHOWTIME", category: "subscriptions.streaming", priority: 220 }
+- { name: "Sirius XM", pattern: "SIRIUS XM|SIRIUSXM", is_regex: true, category: "subscriptions.streaming", priority: 220 }
+- { name: "Audible", pattern: "AUDIBLE", category: "subscriptions.streaming", priority: 220 }
+
+# --- Software / SaaS ---
+- { name: "Adobe", pattern: "ADOBE", category: "subscriptions.software", priority: 220 }
+- { name: "Microsoft 365", pattern: "MICROSOFT 365|MSFT\\*OFFICE|OFFICE 365", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "Zoom", pattern: "ZOOM\\.US|ZOOM VIDEO", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "Notion", pattern: "NOTION LABS|NOTION\\.SO", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "Dropbox", pattern: "DROPBOX", category: "subscriptions.software", priority: 220 }
+- { name: "iCloud", pattern: "APPLE\\.COM/BILL|ICLOUD", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "Google One / Workspace", pattern: "GOOGLE ?\\*?(ONE|STORAGE|WORKSPACE|GSUITE)", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "GitHub", pattern: "GITHUB", category: "subscriptions.software", priority: 220 }
+- { name: "Linear", pattern: "LINEAR APP|LINEAR\\.APP", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "Figma", pattern: "FIGMA", category: "subscriptions.software", priority: 220 }
+- { name: "Slack", pattern: "SLACK\\.COM|SLACK TECH", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "Canva", pattern: "CANVA", category: "subscriptions.software", priority: 220 }
+- { name: "1Password", pattern: "1PASSWORD|1PWD", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "LastPass", pattern: "LASTPASS", category: "subscriptions.software", priority: 220 }
+- { name: "Bitwarden", pattern: "BITWARDEN", category: "subscriptions.software", priority: 220 }
+- { name: "ChatGPT", pattern: "OPENAI|CHATGPT", is_regex: true, category: "subscriptions.software", priority: 220 }
+
+# --- News / magazines ---
+- { name: "NYT", pattern: "NYTIMES|NEW YORK TIMES", is_regex: true, category: "subscriptions.news", priority: 220 }
+- { name: "Washington Post", pattern: "WASHINGTONPOST|WASHINGTON POST", is_regex: true, category: "subscriptions.news", priority: 220 }
+- { name: "WSJ", pattern: "WSJ\\.COM|WALL STREET JOURNAL", is_regex: true, category: "subscriptions.news", priority: 220 }
+- { name: "The Atlantic", pattern: "ATLANTIC MEDIA|THEATLANTIC", is_regex: true, category: "subscriptions.news", priority: 220 }
+- { name: "New Yorker", pattern: "NEW YORKER|NEWYORKER", is_regex: true, category: "subscriptions.news", priority: 220 }
+- { name: "Bloomberg", pattern: "BLOOMBERG", category: "subscriptions.news", priority: 220 }
+- { name: "Substack", pattern: "SUBSTACK", category: "subscriptions.news", priority: 220 }
+- { name: "Patreon", pattern: "PATREON", category: "subscriptions.news", priority: 220 }
+- { name: "Medium", pattern: "MEDIUM\\.COM|MEDIUM SUB", is_regex: true, category: "subscriptions.news", priority: 220 }
+
+# --- Internet / utilities (additional) ---
+- { name: "Spectrum", pattern: "SPECTRUM\\b", is_regex: true, category: "housing.internet", priority: 220 }
+- { name: "Cox", pattern: "COX COMM|COX CABLE", is_regex: true, category: "housing.internet", priority: 220 }
+- { name: "Verizon Fios", pattern: "VERIZON FIOS|FIOS", is_regex: true, category: "housing.internet", priority: 220 }
+- { name: "Frontier", pattern: "FRONTIER COMM", category: "housing.internet", priority: 220 }
+- { name: "RCN", pattern: "RCN INTERNET", category: "housing.internet", priority: 220 }
+- { name: "EarthLink", pattern: "EARTHLINK", category: "housing.internet", priority: 220 }
+
+- { name: "ConEd / NY", pattern: "CON ?ED|CONSOLIDATED EDISON", is_regex: true, category: "housing.utilities", priority: 220 }
+- { name: "SoCal Edison", pattern: "SOUTHERN CAL EDISON|SCE WEB", is_regex: true, category: "housing.utilities", priority: 220 }
+- { name: "Duke Energy", pattern: "DUKE ENERGY", category: "housing.utilities", priority: 220 }
+- { name: "National Grid", pattern: "NATIONAL GRID", category: "housing.utilities", priority: 220 }
+- { name: "SDG&E", pattern: "SDG&E|SAN DIEGO GAS", is_regex: true, category: "housing.utilities", priority: 220 }
+- { name: "DWP", pattern: "LADWP|LA DWP", is_regex: true, category: "housing.utilities", priority: 220 }
+- { name: "EBMUD water", pattern: "EBMUD", category: "housing.utilities", priority: 220 }
+- { name: "SF water dept", pattern: "SF PUC|SFPUC", is_regex: true, category: "housing.utilities", priority: 220 }
+- { name: "Generic electric utility", pattern: "ELECTRIC|POWER (CO|UTILITY)", is_regex: true, category: "housing.utilities", priority: 150 }
+- { name: "Generic water utility", pattern: "WATER (CO|UTILITY|DEPT|SERVICE)", is_regex: true, category: "housing.utilities", priority: 150 }
+- { name: "Generic gas utility", pattern: "NATURAL GAS|GAS UTILITY", is_regex: true, category: "housing.utilities", priority: 150 }
+
+# --- Phone (carved out from utilities; still goes into the utilities slug) ---
+- { name: "Mint Mobile", pattern: "MINT MOBILE", category: "housing.utilities", priority: 210 }
+- { name: "Visible", pattern: "VISIBLE WIRELESS|VISIBLE BY VERIZON", is_regex: true, category: "housing.utilities", priority: 210 }
+- { name: "Cricket Wireless", pattern: "CRICKET WIRELESS", category: "housing.utilities", priority: 210 }
+- { name: "US Cellular", pattern: "US CELLULAR", category: "housing.utilities", priority: 210 }
+- { name: "Boost Mobile", pattern: "BOOST MOBILE", category: "housing.utilities", priority: 210 }
+
+# --- Online shopping (additional) ---
+- { name: "eBay", pattern: "EBAY", category: "shopping.online", priority: 200 }
+- { name: "Etsy", pattern: "ETSY", category: "shopping.online", priority: 200 }
+- { name: "Walmart.com", pattern: "WALMART\\.COM|WM SUPERCENTER", is_regex: true, category: "shopping.online", priority: 200 }
+- { name: "Shein", pattern: "SHEIN", category: "shopping.online", priority: 200 }
+- { name: "Temu", pattern: "TEMU", category: "shopping.online", priority: 200 }
+
+# --- Clothing ---
+- { name: "Lululemon", pattern: "LULULEMON", category: "shopping.clothing", priority: 200 }
+- { name: "Old Navy", pattern: "OLD NAVY", category: "shopping.clothing", priority: 200 }
+- { name: "Gap", pattern: "^GAP\\b|GAP STORE|GAP.COM", is_regex: true, category: "shopping.clothing", priority: 200 }
+- { name: "Banana Republic", pattern: "BANANA REPUBLIC", category: "shopping.clothing", priority: 200 }
+- { name: "J.Crew", pattern: "J\\.?CREW", is_regex: true, category: "shopping.clothing", priority: 200 }
+- { name: "Levi's", pattern: "LEVIS\\.COM|LEVI STRAUSS", is_regex: true, category: "shopping.clothing", priority: 200 }
+- { name: "Patagonia", pattern: "PATAGONIA", category: "shopping.clothing", priority: 200 }
+- { name: "Aritzia", pattern: "ARITZIA", category: "shopping.clothing", priority: 200 }
+- { name: "Madewell", pattern: "MADEWELL", category: "shopping.clothing", priority: 200 }
+- { name: "Uniqlo", pattern: "UNIQLO", category: "shopping.clothing", priority: 200 }
+- { name: "Zara", pattern: "ZARA\\.COM|ZARA USA", is_regex: true, category: "shopping.clothing", priority: 200 }
+- { name: "H&M", pattern: "H&M\\b|H AND M", is_regex: true, category: "shopping.clothing", priority: 200 }
+- { name: "ASOS", pattern: "ASOS", category: "shopping.clothing", priority: 200 }
+- { name: "Ulta Beauty", pattern: "ULTA BEAUTY|ULTA SALON", is_regex: true, category: "shopping.clothing", priority: 200 }
+- { name: "Bath & Body Works", pattern: "BATH & BODY|BATH AND BODY", is_regex: true, category: "shopping.clothing", priority: 200 }
+
+# --- Electronics ---
+- { name: "Microcenter", pattern: "MICROCENTER|MICRO CENTER", is_regex: true, category: "shopping.electronics", priority: 200 }
+- { name: "Newegg", pattern: "NEWEGG", category: "shopping.electronics", priority: 200 }
+- { name: "B&H Photo", pattern: "B&H PHOTO|BHPHOTOVIDEO", is_regex: true, category: "shopping.electronics", priority: 200 }
+- { name: "Adorama", pattern: "ADORAMA", category: "shopping.electronics", priority: 200 }
+
+# --- Household / home goods ---
+- { name: "IKEA", pattern: "IKEA", category: "shopping.household", priority: 200 }
+- { name: "West Elm", pattern: "WEST ELM", category: "shopping.household", priority: 200 }
+- { name: "Wayfair", pattern: "WAYFAIR", category: "shopping.household", priority: 200 }
+- { name: "Crate & Barrel", pattern: "CRATE & BARREL|CRATE AND BARREL", is_regex: true, category: "shopping.household", priority: 200 }
+- { name: "World Market", pattern: "WORLD MARKET|COST PLUS WM", is_regex: true, category: "shopping.household", priority: 200 }
+- { name: "Bed Bath", pattern: "BED BATH", category: "shopping.household", priority: 200 }
+- { name: "HomeGoods", pattern: "HOMEGOODS", category: "shopping.household", priority: 200 }
+- { name: "TJ Maxx", pattern: "TJ ?MAXX|T\\.J\\. MAXX", is_regex: true, category: "shopping.household", priority: 200 }
+- { name: "Marshalls", pattern: "MARSHALLS", category: "shopping.household", priority: 200 }
+- { name: "Lowe's", pattern: "LOWES\\b|LOWE'S", is_regex: true, category: "housing.home_improvement", priority: 200 }
+- { name: "Ace Hardware", pattern: "ACE HARDWARE", category: "housing.home_improvement", priority: 200 }
+- { name: "Dick's Sporting", pattern: "DICKS SPORTING|DICK'S SPORT", is_regex: true, category: "shopping.household", priority: 200 }
+
+# --- Travel: airlines ---
+- { name: "United Airlines", pattern: "UNITED AIRLINES|UNITED AIR", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Delta", pattern: "DELTA AIR", category: "personal.travel", priority: 220 }
+- { name: "American Airlines", pattern: "AMERICAN AIR|AA\\.COM", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Southwest", pattern: "SOUTHWEST AIR|SOUTHWES.+AIRLINES", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "JetBlue", pattern: "JETBLUE", category: "personal.travel", priority: 220 }
+- { name: "Alaska Airlines", pattern: "ALASKA AIR", category: "personal.travel", priority: 220 }
+- { name: "Spirit", pattern: "SPIRIT AIRLINES|SPIRIT AIR", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Frontier", pattern: "FRONTIER AIRLINES", category: "personal.travel", priority: 220 }
+- { name: "Hawaiian", pattern: "HAWAIIAN AIR", category: "personal.travel", priority: 220 }
+
+# --- Travel: hotels ---
+- { name: "Marriott", pattern: "MARRIOTT", category: "personal.travel", priority: 220 }
+- { name: "Hilton", pattern: "HILTON", category: "personal.travel", priority: 220 }
+- { name: "Hyatt", pattern: "HYATT", category: "personal.travel", priority: 220 }
+- { name: "IHG", pattern: "IHG\\b|HOLIDAY INN|INTERCONTINENTAL", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Wyndham", pattern: "WYNDHAM", category: "personal.travel", priority: 220 }
+- { name: "Best Western", pattern: "BEST WESTERN", category: "personal.travel", priority: 220 }
+- { name: "Motel 6", pattern: "MOTEL 6", category: "personal.travel", priority: 220 }
+
+# --- Travel: aggregators ---
+- { name: "Airbnb", pattern: "AIRBNB", category: "personal.travel", priority: 220 }
+- { name: "VRBO", pattern: "VRBO", category: "personal.travel", priority: 220 }
+- { name: "Hotels.com", pattern: "HOTELS\\.COM", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Expedia", pattern: "EXPEDIA", category: "personal.travel", priority: 220 }
+- { name: "Booking.com", pattern: "BOOKING\\.COM", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Kayak", pattern: "KAYAK\\.COM", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Priceline", pattern: "PRICELINE", category: "personal.travel", priority: 220 }
+- { name: "TSA Precheck", pattern: "TSA PRECHECK|TSA\\*PRECHECK", is_regex: true, category: "personal.travel", priority: 220 }
+- { name: "Global Entry", pattern: "USCBP GLOBAL ENTRY|GLOBAL ENTRY APP", is_regex: true, category: "personal.travel", priority: 220 }
+
+# --- Entertainment ---
+- { name: "AMC Theatres", pattern: "AMC THEATRES|AMC ONLINE", is_regex: true, category: "personal.entertainment", priority: 200 }
+- { name: "Regal Cinemas", pattern: "REGAL CINEMAS", category: "personal.entertainment", priority: 200 }
+- { name: "Cinemark", pattern: "CINEMARK", category: "personal.entertainment", priority: 200 }
+- { name: "Ticketmaster", pattern: "TICKETMASTER", category: "personal.entertainment", priority: 200 }
+- { name: "StubHub", pattern: "STUBHUB", category: "personal.entertainment", priority: 200 }
+- { name: "SeatGeek", pattern: "SEATGEEK", category: "personal.entertainment", priority: 200 }
+- { name: "Live Nation", pattern: "LIVE NATION", category: "personal.entertainment", priority: 200 }
+- { name: "Steam", pattern: "STEAMPOWERED|VALVE\\*STEAM", is_regex: true, category: "personal.entertainment", priority: 200 }
+- { name: "PlayStation", pattern: "PLAYSTATION|PSN\\*", is_regex: true, category: "personal.entertainment", priority: 200 }
+- { name: "Xbox", pattern: "MICROSOFT\\*XBOX|XBOX LIVE", is_regex: true, category: "personal.entertainment", priority: 200 }
+- { name: "Nintendo", pattern: "NINTENDO", category: "personal.entertainment", priority: 200 }
+
+# --- Pets ---
+- { name: "Chewy", pattern: "CHEWY", category: "personal.pets", priority: 200 }
+- { name: "Petco", pattern: "PETCO", category: "personal.pets", priority: 200 }
+- { name: "PetSmart", pattern: "PETSMART", category: "personal.pets", priority: 200 }
+- { name: "BarkBox", pattern: "BARKBOX", category: "personal.pets", priority: 200 }
+- { name: "Generic vet", pattern: "VETERINARY|VET CLINIC|ANIMAL HOSP", is_regex: true, category: "personal.pets", priority: 180 }
+
+# --- Gifts ---
+- { name: "1-800-Flowers", pattern: "1-800-FLOWERS|1800FLOWERS", is_regex: true, category: "personal.gifts", priority: 200 }
+- { name: "FTD", pattern: "FTD\\.COM|FTD FLOWERS", is_regex: true, category: "personal.gifts", priority: 200 }
+- { name: "ProFlowers", pattern: "PROFLOWERS", category: "personal.gifts", priority: 200 }
+- { name: "Hallmark", pattern: "HALLMARK", category: "personal.gifts", priority: 200 }
+
+# --- Financial: additional fees / transfers ---
+- { name: "Overdraft fee", pattern: "OVERDRAFT|NSF FEE|INSUFFICIENT FUNDS FEE", is_regex: true, category: "financial.fees", priority: 240 }
+- { name: "Monthly maintenance", pattern: "MONTHLY (MAINTENANCE|SERVICE) FEE", is_regex: true, category: "financial.fees", priority: 240 }
+- { name: "Foreign transaction fee", pattern: "FOREIGN TRANS(ACTION)? FEE|INTL TRANSACTION FEE", is_regex: true, category: "financial.fees", priority: 240 }
+- { name: "Wire fee", pattern: "WIRE TRANSFER FEE", category: "financial.fees", priority: 240 }
+- { name: "Cash App", pattern: "CASH APP|CASHAPP|SQUARECASH", is_regex: true, category: "financial.transfer", priority: 220 }
+- { name: "PayPal", pattern: "PAYPAL", category: "financial.transfer", priority: 200 }
+- { name: "Apple Cash", pattern: "APPLE CASH", category: "financial.transfer", priority: 220 }
+
+# --- Investment / savings (additional) ---
+- { name: "Vanguard", pattern: "VANGUARD", category: "financial.investment", priority: 220 }
+- { name: "Fidelity", pattern: "FIDELITY", category: "financial.investment", priority: 220 }
+- { name: "Schwab", pattern: "CHARLES SCHWAB|SCHWAB BROK", is_regex: true, category: "financial.investment", priority: 220 }
+- { name: "Robinhood", pattern: "ROBINHOOD", category: "financial.investment", priority: 220 }
+- { name: "Coinbase", pattern: "COINBASE", category: "financial.investment", priority: 220 }
+- { name: "Acorns", pattern: "ACORNS", category: "financial.investment", priority: 220 }
+- { name: "Wealthfront", pattern: "WEALTHFRONT", category: "financial.investment", priority: 220 }
+- { name: "Betterment", pattern: "BETTERMENT", category: "financial.investment", priority: 220 }
+
+# --- Income (additional) ---
+- { name: "ACH credit (generic)", pattern: "ACH CREDIT", category: "income.other", priority: 200 }
+- { name: "Venmo received", pattern: "VENMO CASHOUT|VENMO PAYMENT FROM", is_regex: true, category: "income.other", priority: 200 }
+- { name: "Interest earned", pattern: "INTEREST PAID|INTEREST EARNED", is_regex: true, category: "income.interest", priority: 230 }
+
+# ---------------------------------------------------------------------------
+# Plaid POS DEBIT coverage pass — added 2026-05-04 from observed
+# uncategorized merchants in Chris's live DB (151/300 still uncatted
+# after seed-rule reload). Patterns chosen from real Plaid raw
+# descriptions; substring match (uppercased) so the engine catches
+# both "POS DEBIT FOODMAXX #422 ..." and clean "FOODMAXX" inputs.
+# ---------------------------------------------------------------------------
+
+# --- Groceries (Bay Area chains + cleaned names) ---
+- { name: "FoodMaxx",         pattern: "FOODMAXX",                category: "food.groceries",   priority: 200 }
+- { name: "Los Primos Meat",  pattern: "LOS PRIMOS",              category: "food.groceries",   priority: 200 }
+- { name: "Lucky Supermarkets",pattern: "LUCKY SUPERMARKETS|LUCKY #", is_regex: true, category: "food.groceries", priority: 200 }
+- { name: "Mi Pueblo",        pattern: "MI PUEBLO",               category: "food.groceries",   priority: 200 }
+- { name: "Smart & Final",    pattern: "SMART & FINAL|SMART AND FINAL", is_regex: true, category: "food.groceries", priority: 200 }
+- { name: "Grocery Outlet",   pattern: "GROCERY OUTLET",          category: "food.groceries",   priority: 200 }
+- { name: "99 Ranch Market",  pattern: "99 RANCH",                category: "food.groceries",   priority: 200 }
+- { name: "H Mart",           pattern: "H MART|HMART",            is_regex: true, category: "food.groceries", priority: 200 }
+
+# --- Coffee / bakery / quick eats ---
+- { name: "Le Boulanger",     pattern: "LE BOULANGER|BOULANGER",  is_regex: true, category: "food.coffee",      priority: 200 }
+- { name: "Panera",           pattern: "PANERA",                  category: "food.restaurants", priority: 190 }
+- { name: "Specialty's",      pattern: "SPECIALTY",               category: "food.coffee",      priority: 180 }
+- { name: "Erewhon",          pattern: "EREWHON",                 category: "food.groceries",   priority: 200 }
+# Local restaurant alias from receipt parser
+- { name: "Jakes of Willow Glen", pattern: "JAKESOFWILLOWGLEN|JAKE'S OF WILLOW", is_regex: true, category: "food.restaurants", priority: 200 }
+
+# --- Transport / parking / car wash ---
+- { name: "Stevens Creek Car Wash", pattern: "STEVENS CREEK XPRESS|STEVENS CREEK CAR", is_regex: true, category: "transport.maintenance", priority: 200 }
+- { name: "Generic car wash", pattern: "CAR WASH",                category: "transport.maintenance", priority: 150 }
+- { name: "Bay Area Quick",   pattern: "BAY AREA QUICK",          category: "transport.gas",    priority: 180 }
+- { name: "ParkMobile",       pattern: "PARKMOBILE",              category: "transport.parking",priority: 200 }
+- { name: "PassportParking",  pattern: "PASSPORT PARKING",        category: "transport.parking",priority: 200 }
+- { name: "SP Plus parking",  pattern: "SP\\+ PARKING|SP PLUS",   is_regex: true, category: "transport.parking", priority: 180 }
+
+# --- Health / medical ---
+- { name: "American Family Care", pattern: "AFC SANTA CLARA|AMERICAN FAMILY CARE", is_regex: true, category: "health.medical", priority: 200 }
+- { name: "Bay Area Naturopathic", pattern: "BAY AREA NATUROPATHIC|NATUROPATHIC", is_regex: true, category: "health.medical", priority: 200 }
+- { name: "Generic dental",   pattern: "DENTAL|DENTIST",          is_regex: true, category: "health.medical", priority: 150 }
+- { name: "Generic clinic",   pattern: "URGENT CARE|CLINIC|MEDICAL CTR", is_regex: true, category: "health.medical", priority: 150 }
+- { name: "Generic pharmacy", pattern: "CVS/PHARM|WALGREENS|RITE AID", is_regex: true, category: "health.pharmacy", priority: 200 }
+
+# --- Fitness / recreation (mapped to health.fitness — closest fit) ---
+- { name: "Movement (climbing gym)", pattern: "MOVEMENT MOUNTAIN VIEW|MOVEMENT GYM", is_regex: true, category: "health.fitness", priority: 200 }
+- { name: "Planet Fitness",   pattern: "PLANET FITNESS",          category: "health.fitness",   priority: 200 }
+- { name: "24 Hour Fitness",  pattern: "24 HOUR FITNESS|24HRFITNESS", is_regex: true, category: "health.fitness", priority: 200 }
+- { name: "Equinox",          pattern: "EQUINOX",                 category: "health.fitness",   priority: 200 }
+- { name: "ClassPass",        pattern: "CLASSPASS",               category: "health.fitness",   priority: 200 }
+- { name: "Crunch Fitness",   pattern: "CRUNCH FITNESS",          category: "health.fitness",   priority: 200 }
+
+# --- Storage / housing-adjacent ---
+- { name: "Trojan Storage",   pattern: "TROJAN STORAGE",          category: "housing.rent_mortgage", priority: 180 }
+- { name: "Public Storage",   pattern: "PUBLIC STORAGE",          category: "housing.rent_mortgage", priority: 180 }
+- { name: "Extra Space Storage", pattern: "EXTRA SPACE",          category: "housing.rent_mortgage", priority: 180 }
+
+# --- Subscriptions / cash advance / fintech ---
+- { name: "Dave Inc (cash advance)", pattern: "DAVE INC|DAVE.COM", is_regex: true, category: "subscriptions.software", priority: 220 }
+- { name: "GMass",            pattern: "GMASS",                   category: "subscriptions.software", priority: 220 }
+- { name: "Earnin",           pattern: "EARNIN",                  category: "subscriptions.software", priority: 220 }
+- { name: "Brigit",           pattern: "BRIGIT",                  category: "subscriptions.software", priority: 220 }
+
+# --- Financial fees / wires / Pay-in-4 / BNPL ---
+- { name: "Wire fee (incoming)",  pattern: "DOMESTIC INCOMING WIRE FEE|INCOMING WIRE FEE", is_regex: true, category: "financial.fees", priority: 230 }
+- { name: "Wire fee (outgoing)",  pattern: "DOMESTIC WIRE FEE|OUTGOING WIRE FEE",          is_regex: true, category: "financial.fees", priority: 230 }
+- { name: "Chase Pay in 4",   pattern: "CHASE PAY IN 4|PAY IN 4 DEPOSIT",                 is_regex: true, category: "financial.payment", priority: 220 }
+- { name: "Affirm",           pattern: "AFFIRM",                  category: "financial.payment", priority: 220 }
+- { name: "Klarna",           pattern: "KLARNA",                  category: "financial.payment", priority: 220 }
+- { name: "Afterpay",         pattern: "AFTERPAY",                category: "financial.payment", priority: 220 }
+- { name: "Progressive Lease",pattern: "PROGRESSIVELEASE|PROGRESSIVE LEASING", is_regex: true, category: "shopping.household", priority: 200 }
+
+# --- Investment-adjacent ---
+- { name: "Diligent Financial", pattern: "DILIGENT FINANCIAL",    category: "financial.investment", priority: 200 }
+
+# --- Entertainment / tickets ---
+- { name: "Independence Hall tickets", pattern: "TICKETS INDEPENDENCE", category: "personal.entertainment", priority: 200 }
+- { name: "Ticketmaster",     pattern: "TICKETMASTER",            category: "personal.entertainment", priority: 200 }
+- { name: "AXS",              pattern: "AXS.COM|AXSEVENTS",       is_regex: true, category: "personal.entertainment", priority: 200 }
+- { name: "StubHub",          pattern: "STUBHUB",                 category: "personal.entertainment", priority: 200 }
+- { name: "Eventbrite",       pattern: "EVENTBRITE",              category: "personal.entertainment", priority: 200 }
+- { name: "AMC Theatres",     pattern: "AMC THEATRES|AMC #",      is_regex: true, category: "personal.entertainment", priority: 200 }
+
+# --- Generic POS DEBIT prefix catch-alls (low priority — only fire when nothing else matched) ---
+- { name: "Generic POS DEBIT supermarket",  pattern: "POS DEBIT.*SUPERMARKET",  is_regex: true, category: "food.groceries",   priority: 110 }
+- { name: "Generic POS DEBIT market",       pattern: "POS DEBIT.*MARKET",       is_regex: true, category: "food.groceries",   priority: 100 }
+- { name: "Generic POS DEBIT restaurant",   pattern: "POS DEBIT.*RESTAURANT",   is_regex: true, category: "food.restaurants", priority: 100 }
+- { name: "Generic POS DEBIT pharmacy",     pattern: "POS DEBIT.*PHARMACY",     is_regex: true, category: "health.pharmacy",  priority: 110 }
+- { name: "Generic POS DEBIT gas",          pattern: "POS DEBIT.*(GAS|FUEL|PETRO)", is_regex: true, category: "transport.gas", priority: 110 }
+- { name: "Generic POS DEBIT parking",      pattern: "POS DEBIT.*PARKING",      is_regex: true, category: "transport.parking", priority: 110 }

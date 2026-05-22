@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance App</title>
+
+    <!-- Inter for body + UI; JetBrains Mono for tabular numbers and
+         monospace details (transaction descriptions, kind labels, etc).
+         Preconnect first so the font handshake doesn't block render. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Enable Inter's contextual alternates + tabular figures globally.
+         tnum gives equal-width digits (so $1,234 and $9,876 line up in
+         columns); cv11 enables Inter's "single-storey a" for a cleaner
+         number/letter feel. ss01 swaps to the more rounded l. */
+      html {
+        font-feature-settings: "tnum" on, "cv11" on, "ss01" on;
+      }
+      /* tabular-nums utility class behavior reinforced — Tailwind already
+         handles this via `tabular-nums` but the body-level setting helps
+         Edge/Firefox quirks where the inline class doesn't override. */
+      .tabular-nums {
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body class="bg-bg text-text">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
