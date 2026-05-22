@@ -40,6 +40,10 @@ class CashFlowForecastOut(BaseModel):
     events: list[CashFlowEventOut]
     daily: list[DailyForecastPointOut]
     crunch_days: list[date]
+    # Sprint O wiring — the everyday variable-spend assumption folded into
+    # the running-balance projection (see cashflow.service.build_forecast).
+    variable_spend_monthly_cents: int = 0
+    variable_spend_daily_cents: int = 0
     # Server-side computation timestamp — drives the SyncFreshnessChip on
     # the Cash Flow panel.
     generated_at: datetime | None = None
@@ -162,5 +166,7 @@ def get_forecast(
             for d in forecast.daily
         ],
         crunch_days=forecast.crunch_days,
+        variable_spend_monthly_cents=forecast.variable_spend_monthly_cents,
+        variable_spend_daily_cents=forecast.variable_spend_daily_cents,
         generated_at=datetime.utcnow(),
     )

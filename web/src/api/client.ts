@@ -1605,6 +1605,11 @@ export interface CashFlowForecast {
   events: CashFlowEvent[];
   daily: DailyForecastPoint[];
   crunch_days: string[];
+  /** Sprint O wiring — everyday variable spending folded into the
+   *  running-balance projection (excludes bills/subscriptions, which
+   *  appear as their own dated events). */
+  variable_spend_monthly_cents?: number;
+  variable_spend_daily_cents?: number;
   /** Server-side computation timestamp — drives the SyncFreshnessChip
    *  on the Cash Flow panel. */
   generated_at?: string | null;

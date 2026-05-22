@@ -167,6 +167,14 @@ export default function CashFlowPanel() {
           <div className="text-[11px] text-text-soft mt-1">
             Red dots = days the running balance is projected to dip below the crunch threshold.
           </div>
+          {f.variable_spend_monthly_cents ? (
+            <div className="text-[11px] text-text-soft mt-1">
+              Running balance also subtracts everyday variable spending —
+              ~{fmtCents(f.variable_spend_monthly_cents)}/mo (~
+              {fmtCents(f.variable_spend_daily_cents ?? 0)}/day), your 90-day
+              average excluding the bills &amp; subscriptions listed below.
+            </div>
+          ) : null}
         </div>
       </div>
 

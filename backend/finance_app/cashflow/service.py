@@ -81,6 +81,13 @@ class CashFlowForecast:
     events: list[CashFlowEvent] = field(default_factory=list)
     daily: list[DailyForecastPoint] = field(default_factory=list)
     crunch_days: list[date] = field(default_factory=list)
+    # Sprint O wiring — everyday variable spending the forecast now folds
+    # into the running balance so the projection is realistic. Sourced
+    # from monthly_financials.compute_trailing_real_outflow (the canonical
+    # 90-day "real spend"), minus the bills/subscriptions already
+    # projected as events, to avoid double-counting.
+    variable_spend_monthly_cents: int = 0
+    variable_spend_daily_cents: int = 0
 
 
 # ---------------------------------------------------------------------
@@ -366,6 +373,38 @@ def _liquid_starting_balance(db: Session) -> int:
     return total
 
 
+def _modeled_recurring_monthly_cents(db: Session) -> int:
+    """Monthly-equivalent of the recurring outflows the forecast already
+    draws as explicit events — active (non-annual) subscriptions + tracked
+    bills.
+
+    ``monthly_financials.compute_trailing_real_outflow`` reports TOTAL real
+    spend, which already includes these recurring charges. ``build_forecast``
+    subtracts this figure from that total so only the *variable* remainder
+    (groceries, gas, dining, shopping) is spread as a daily burn — the
+    recurring part is already on the calendar as its own dated events.
+    """
+    from finance_app.subscriptions.annual_projector import _is_annual
+
+    total = 0
+    subs = db.execute(
+        select(Subscription).where(Subscription.status == SubscriptionStatus.active)
+    ).scalars().all()
+    for s in subs:
+        if s.cadence_days is None or s.cadence_days <= 0:
+            continue
+        if _is_annual(s):
+            continue
+        amt = abs(s.last_amount_cents or s.amount_cents or 0)
+        total += amt * 30 // s.cadence_days
+    for b in db.execute(select(Bill)).scalars().all():
+        amt = abs(b.typical_amount_cents or 0)
+        if amt == 0 or b.cadence_days <= 0:
+            continue
+        total += amt * 30 // b.cadence_days
+    return total
+
+
 # ---------------------------------------------------------------------
 #  Top-level
 # ---------------------------------------------------------------------
@@ -422,6 +461,23 @@ def build_forecast(
     )
     starting_balance = _liquid_starting_balance(db)
 
+    # ---- Sprint O wiring: everyday variable spending --------------------
+    # The events above only cover subscriptions, bills and paychecks.
+    # Without the rest of the spending — groceries, gas, dining, shopping —
+    # the running balance only ever climbs and no crunch day is ever
+    # flagged. Pull the canonical "real spend" figure from the Sprint O
+    # monthly_financials module and subtract the recurring charges already
+    # drawn as events, leaving just the variable remainder to spread as a
+    # flat daily burn.
+    from finance_app.budgets.monthly_financials import (
+        compute_trailing_real_outflow,
+    )
+
+    real_monthly = compute_trailing_real_outflow(db, today=today)
+    modeled_monthly = _modeled_recurring_monthly_cents(db)
+    variable_monthly = max(0, real_monthly - modeled_monthly)
+    variable_daily = variable_monthly // 30
+
     # Build per-day rollup
     by_day: dict[date, list[CashFlowEvent]] = {}
     for e in events:
@@ -433,7 +489,14 @@ def build_forecast(
         d = today + timedelta(days=i)
         days_events = by_day.get(d, [])
         inflow = sum(e.amount_cents for e in days_events if e.amount_cents > 0)
-        outflow = sum(-e.amount_cents for e in days_events if e.amount_cents < 0)
+        # Explicit dated outflows that day + the flat variable-spend burn.
+        # The burn is deliberately NOT added to ``events`` — 30-180
+        # identical "variable spending" rows would bury the real events;
+        # it surfaces only in the balance line + the panel footnote.
+        outflow = (
+            sum(-e.amount_cents for e in days_events if e.amount_cents < 0)
+            + variable_daily
+        )
         net = inflow - outflow
         running += net
         daily.append(
@@ -457,4 +520,6 @@ def build_forecast(
         events=events,
         daily=daily,
         crunch_days=crunch,
+        variable_spend_monthly_cents=variable_monthly,
+        variable_spend_daily_cents=variable_daily,
     )
