@@ -59,6 +59,28 @@ from .client import GmailClient, GmailMessage
 logger = logging.getLogger(__name__)
 
 
+# ---------------------------------------------------------------------
+#  Audit 2026-05-22 #2 — credit-bureau body strip
+# ---------------------------------------------------------------------
+#
+# Once a credit-bureau parser has matched, the structured fields
+# (score, deltas, account fragments) live in EmailMessage.extra.
+# The raw body and Gmail snippet are then redundant copies of the
+# same data — but the SQLite file is unencrypted and gets copied
+# verbatim into backend/backups/ for 60 days, which made a casual
+# leak (the SmartCredit dashboard in git history, surfaced 2026-05-22)
+# a structural exposure rather than a one-off. After a parsed match
+# here, body_plain and snippet are dropped and a marker is added to
+# extra so the redaction is auditable.
+_CREDIT_BUREAU_PARSERS: frozenset[str] = frozenset({
+    "credit_karma_report",
+    "equifax_report",
+    "experian_report",
+    "smart_credit_report",
+    "transunion_report",
+})
+
+
 # A synthetic catch-all institution + account for email-sourced transactions
 # that we can't map to a real account (no card_last4 extracted, or card_last4
 # didn't match any known Account.mask).
@@ -277,8 +299,20 @@ class GmailConnector:
         # Truncate body if outcome is ignored — no reason to keep a 40KB
         # marketing email indefinitely. We can always re-fetch.
         body = msg.body_plain
+        snippet = msg.snippet
         if outcome == ParserOutcome.ignored and body and len(body) > 2000:
             body = body[:2000] + "\n\n…[truncated, ignored by parsers]"
+        elif (
+            outcome == ParserOutcome.parsed
+            and parser_name in _CREDIT_BUREAU_PARSERS
+        ):
+            # Parsed credit-bureau report: structured fields are already in
+            # ``extra``. Drop the raw body + snippet so the unencrypted
+            # finance.db (and its 60-day backups/) don't keep credit-report
+            # plaintext. See the module-level note above.
+            body = None
+            snippet = None
+            extra["body_stripped_for_privacy"] = True
 
         stmt = sqlite_insert(EmailMessage).values(
             gmail_message_id=msg.gmail_message_id,
@@ -287,7 +321,7 @@ class GmailConnector:
             from_domain=msg.from_domain[:255],
             subject=(msg.subject or "")[:500],
             received_at=msg.received_at.replace(tzinfo=None),  # SQLite DateTime
-            snippet=(msg.snippet or "")[:500],
+            snippet=(snippet[:500] if snippet else None),
             body_plain=body,
             parser_name=parser_name,
             parser_outcome=outcome,
