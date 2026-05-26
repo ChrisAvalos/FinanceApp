@@ -150,3 +150,35 @@ def make_plaid_item(
     db.add(item)
     db.flush()
     return item
+
+def make_email_message(
+    db,
+    *,
+    gmail_message_id: str | None = None,
+    parser_name: str | None = None,
+    parser_outcome=None,
+    body_plain: str | None = "body",
+    snippet: str | None = "snippet",
+    from_address: str = "alerts@experian.com",
+    from_domain: str = "experian.com",
+    subject: str = "Your score is ready",
+    extra: dict | None = None,
+):
+    from datetime import datetime
+    from finance_app.db.models import EmailMessage, ParserOutcome
+    em = EmailMessage(
+        gmail_message_id=gmail_message_id or f"gm-{_n()}",
+        gmail_thread_id=None,
+        from_address=from_address,
+        from_domain=from_domain,
+        subject=subject,
+        received_at=datetime(2026, 5, 1, 12, 0, 0),
+        snippet=snippet,
+        body_plain=body_plain,
+        parser_name=parser_name,
+        parser_outcome=parser_outcome or ParserOutcome.ignored,
+        extra=extra,
+    )
+    db.add(em)
+    db.flush()
+    return em
