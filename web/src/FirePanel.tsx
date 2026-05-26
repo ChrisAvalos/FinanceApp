@@ -25,6 +25,7 @@ import {
   type FireYear,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Tiny utilities                                                     */
@@ -557,6 +558,10 @@ export default function FirePanel() {
     retirementAge,
     currentAge,
   ]);
+
+  if (proj.isError) {
+    return <PanelError title="Couldn't load FIRE projection." error={proj.error} onRetry={() => proj.refetch()} />;
+  }
 
   return (
     <div>

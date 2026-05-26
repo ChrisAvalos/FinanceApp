@@ -16,6 +16,7 @@ import {
   CelebrationToastStack,
   useCelebrate,
 } from "./components/CelebrationToast";
+import PanelError from "./components/PanelError";
 
 function StatusBadge({ s }: { s: CardApplicationStatus }) {
   const map: Record<CardApplicationStatus, { label: string; cls: string }> = {
@@ -364,6 +365,10 @@ export default function CardApplicationsPanel() {
     commit: (id) => destroy.mutate(id as number),
     describe: (a) => `Application "${a.card_name}" deleted`,
   });
+
+  if (apps.isError) {
+    return <PanelError title="Couldn't load card applications." error={apps.error} onRetry={() => apps.refetch()} />;
+  }
 
   return (
     <div>

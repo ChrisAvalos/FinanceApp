@@ -27,6 +27,7 @@ import {
   type RecurringPurchase,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Scraper status strip                                                */
@@ -462,6 +463,10 @@ export default function DealsPanel() {
     () => (deals.data ?? []).reduce((s, d) => s + (d.annual_savings_cents ?? 0), 0),
     [deals.data],
   );
+
+  if (deals.isError) {
+    return <PanelError title="Couldn't load deals." error={deals.error} onRetry={() => deals.refetch()} />;
+  }
 
   return (
     <div>

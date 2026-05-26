@@ -31,6 +31,7 @@ import {
   type NotificationCategory,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Category visual config                                             */
@@ -398,6 +399,10 @@ export default function NotificationsPanel() {
       emptyCopy =
         "No notifications. Anomaly scans, goal milestones, and unusual-transaction alerts all land here.";
     }
+  }
+
+  if (list.isError) {
+    return <PanelError title="Couldn't load notifications." error={list.error} onRetry={() => list.refetch()} />;
   }
 
   return (

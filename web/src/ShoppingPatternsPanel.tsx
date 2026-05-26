@@ -28,6 +28,7 @@ import {
 import CountUp from "./components/CountUp";
 import { SkelHeroRow, SkelTableRow } from "./components/Skeleton";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Status badge                                                        */
@@ -246,6 +247,10 @@ export default function ShoppingPatternsPanel() {
 
   const heroLoading = patterns.isLoading || rollup.isLoading;
   const activePatternCount = patterns.data?.filter((p) => p.status === "active").length ?? 0;
+
+  if (patterns.isError) {
+    return <PanelError title="Couldn't load shopping patterns." error={patterns.error} onRetry={() => patterns.refetch()} />;
+  }
 
   return (
     <div>

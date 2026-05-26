@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fmtCents } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 export default function AnomalyPanel() {
   const qc = useQueryClient();
@@ -22,6 +23,10 @@ export default function AnomalyPanel() {
     mutationFn: () => api.anomalyScan(days, sigma, true),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["anomalyScan"] }),
   });
+
+  if (scan.isError) {
+    return <PanelError title="Couldn't load anomaly scan." error={scan.error} onRetry={() => scan.refetch()} />;
+  }
 
   return (
     <div>

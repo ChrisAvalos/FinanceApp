@@ -10,6 +10,7 @@ import {
   type UtilizationRow,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -480,6 +481,13 @@ export default function CreditPanel() {
   }, [scores.data]);
 
   const aggregatePct = util.data?.aggregate_live_utilization_pct ?? null;
+
+  if (scores.isError) {
+    return <PanelError title="Couldn't load credit scores." error={scores.error} onRetry={() => scores.refetch()} />;
+  }
+  if (util.isError) {
+    return <PanelError title="Couldn't load credit utilization." error={util.error} onRetry={() => util.refetch()} />;
+  }
 
   return (
     <div className="space-y-6">

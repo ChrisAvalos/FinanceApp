@@ -53,6 +53,7 @@ import {
   type CategorySuggestion,
   type Transaction,
 } from "./api/client";
+import PanelError from "./components/PanelError";
 
 // ============================================================
 // Configuration
@@ -422,6 +423,10 @@ export default function CategorizePanel() {
     const txnId = Number(txnIdStr);
     if (!Number.isFinite(txnId)) return;
     recategorizeM.mutate({ txnId, categoryId: catId });
+  }
+
+  if (txQ.isError) {
+    return <PanelError title="Couldn't load transactions to categorize." error={txQ.error} onRetry={() => txQ.refetch()} />;
   }
 
   return (

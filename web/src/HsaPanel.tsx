@@ -14,6 +14,7 @@ import CountUp from "./components/CountUp";
 import { SkelHeroRow, SkelTableRow } from "./components/Skeleton";
 import SyncFreshnessChip from "./components/SyncFreshness";
 import { UndoToast, useUndoableDelete } from "./components/UndoableDelete";
+import PanelError from "./components/PanelError";
 
 function StatusPill({ status }: { status: HsaReceiptStatus }) {
   const map: Record<HsaReceiptStatus, { label: string; cls: string }> = {
@@ -143,6 +144,13 @@ export default function HsaPanel() {
     return Math.pow(1.07, 30); // ≈ 7.61×
   }, [s]);
   const hasReceipts = (s?.saved_count ?? 0) > 0;
+
+  if (summary.isError) {
+    return <PanelError title="Couldn't load HSA summary." error={summary.error} onRetry={() => summary.refetch()} />;
+  }
+  if (receipts.isError) {
+    return <PanelError title="Couldn't load HSA receipts." error={receipts.error} onRetry={() => receipts.refetch()} />;
+  }
 
   return (
     <div>

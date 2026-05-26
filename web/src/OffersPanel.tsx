@@ -30,6 +30,7 @@ import {
   type PersistedOffer,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -509,6 +510,10 @@ export default function OffersPanel() {
   // Whether to render the full "let's get you set up" empty-state card.
   const showFirstRunEmpty =
     !offers.isLoading && all.length === 0 && status.data != null;
+
+  if (offers.isError) {
+    return <PanelError title="Couldn't load offers." error={offers.error} onRetry={() => offers.refetch()} />;
+  }
 
   return (
     <div>

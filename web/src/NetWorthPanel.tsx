@@ -13,6 +13,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, fmtCents, type Account, type NetWorthHistoryPoint } from "./api/client";
 import CountUp from "./components/CountUp";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /** "Chase · Sapphire Reserve" → returns the friendly composite label. */
 function accountLabel(a: Account): string {
@@ -156,6 +157,10 @@ export default function NetWorthPanel() {
     () => bucketAccounts(accounts.data ?? []),
     [accounts.data],
   );
+
+  if (summary.isError) {
+    return <PanelError title="Couldn't load Net Worth." error={summary.error} onRetry={() => summary.refetch()} />;
+  }
 
   return (
     <div>

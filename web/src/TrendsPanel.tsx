@@ -10,6 +10,7 @@ import {
 } from "./api/client";
 import { SkelHeroRow, SkelTableRow, SkelBlock } from "./components/Skeleton";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Category-share pie chart                                           */
@@ -541,6 +542,10 @@ export default function TrendsPanel() {
       )
       .slice(0, 3);
   }, [categories]);
+
+  if (mom.isError) {
+    return <PanelError title="Couldn't load month-over-month trends." error={mom.error} onRetry={() => mom.refetch()} />;
+  }
 
   return (
     <div className="space-y-6">

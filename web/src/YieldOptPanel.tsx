@@ -12,6 +12,7 @@ import { api, fmtCents, type YieldArbAccount, type YieldArbProduct } from "./api
 import CountUp from "./components/CountUp";
 import { SkelHeroRow, SkelStat } from "./components/Skeleton";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 function ProductRow({ p }: { p: YieldArbProduct }) {
   return (
@@ -94,6 +95,9 @@ export default function YieldOptPanel() {
         </div>
       </div>
     );
+  }
+  if (report.isError) {
+    return <PanelError title="Couldn't load yield-arbitrage report." error={report.error} onRetry={() => report.refetch()} />;
   }
   if (!report.data || report.data.accounts.length === 0) {
     return (

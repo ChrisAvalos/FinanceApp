@@ -20,6 +20,7 @@ import {
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
 import { UndoToast, useUndoableDelete } from "./components/UndoableDelete";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -1008,6 +1009,10 @@ export default function GoalsPanel() {
   }, [goals.data, undoDeleteGoal.pending]);
 
   const bundle: SuggestionBundle | undefined = suggestions.data;
+
+  if (goals.isError) {
+    return <PanelError title="Couldn't load goals." error={goals.error} onRetry={() => goals.refetch()} />;
+  }
 
   return (
     <div className="space-y-6">

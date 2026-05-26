@@ -22,6 +22,7 @@ import {
 import { SkelStat } from "./components/Skeleton";
 import SyncFreshnessChip from "./components/SyncFreshness";
 import DeleteWithConfirm from "./components/DeleteWithConfirm";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Card (list view)                                                    */
@@ -305,6 +306,10 @@ export default function CanonicalProductsPanel() {
 
   const selectedArray = Array.from(selectedIds);
   const canMerge = selectedArray.length === 2;
+
+  if (list.isError) {
+    return <PanelError title="Couldn't load canonical products." error={list.error} onRetry={() => list.refetch()} />;
+  }
 
   return (
     <div>

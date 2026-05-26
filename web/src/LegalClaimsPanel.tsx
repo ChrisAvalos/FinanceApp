@@ -39,6 +39,7 @@ import {
   CelebrationToastStack,
   useCelebrate,
 } from "./components/CelebrationToast";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  US state metadata                                                   */
@@ -629,6 +630,10 @@ export default function LegalClaimsPanel() {
     archive: grouped.archive.length,
   };
   const visible = grouped[tab];
+
+  if (claims.isError) {
+    return <PanelError title="Couldn't load legal claims." error={claims.error} onRetry={() => claims.refetch()} />;
+  }
 
   return (
     <div>

@@ -11,6 +11,7 @@ import { api, fmtCents } from "./api/client";
 import CountUp from "./components/CountUp";
 import { SkelHeroRow, SkelTableRow } from "./components/Skeleton";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 export default function TaxPanel() {
   // Default to current calendar year — that's where this year's
@@ -20,6 +21,10 @@ export default function TaxPanel() {
   // users with only this year's data see all $0 buckets.)
   const [year, setYear] = useState(new Date().getFullYear());
   const report = useQuery({ queryKey: ["taxReport", year], queryFn: () => api.taxReport(year) });
+
+  if (report.isError) {
+    return <PanelError title="Couldn't load tax report." error={report.error} onRetry={() => report.refetch()} />;
+  }
 
   return (
     <div>

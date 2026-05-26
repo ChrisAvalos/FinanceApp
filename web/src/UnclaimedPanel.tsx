@@ -29,6 +29,7 @@ import {
   CelebrationToastStack,
   useCelebrate,
 } from "./components/CelebrationToast";
+import PanelError from "./components/PanelError";
 
 type TabKey = "found" | "claimed" | "paid" | "archive";
 
@@ -539,6 +540,10 @@ export default function UnclaimedPanel() {
     found: grouped.found.length, claimed: grouped.claimed.length,
     paid: grouped.paid.length, archive: grouped.archive.length,
   };
+
+  if (records.isError) {
+    return <PanelError title="Couldn't load unclaimed property records." error={records.error} onRetry={() => records.refetch()} />;
+  }
 
   return (
     <div>

@@ -21,6 +21,7 @@ import {
 import CountUp from "./components/CountUp";
 import { SkelHeroRow, SkelStat } from "./components/Skeleton";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 function MatchCard({ m, onLog }: { m: RedressMatch; onLog: () => void }) {
   const c = m.catalog_entry;
@@ -191,6 +192,10 @@ export default function RedressPanel() {
   // matches.isLoading state as the umbrella signal since that's the
   // most expensive query.
   const heroLoading = matches.isLoading || known.isLoading || tracked.isLoading;
+
+  if (matches.isError) {
+    return <PanelError title="Couldn't load redress matches." error={matches.error} onRetry={() => matches.refetch()} />;
+  }
 
   return (
     <div>
