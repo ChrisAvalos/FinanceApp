@@ -28,6 +28,7 @@ import {
   type SubscriptionType,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 import { UndoToast, useUndoableDelete } from "./components/UndoableDelete";
 import {
   CelebrationToastStack,
@@ -1320,8 +1321,8 @@ export default function SubscriptionsPanel() {
             </button>
           </div>
           {createSub.isError && (
-            <div className="text-[11px] text-outflow mt-1">
-              Couldn't add the subscription — check the name and amount.
+            <div className="mt-2 max-w-md">
+              <PanelError title="Couldn't add the subscription." error={createSub.error} compact />
             </div>
           )}
         </div>
@@ -1720,8 +1721,8 @@ function UnmaskModal({
               </button>
             </div>
             {addChild.isError && (
-              <div className="text-xs text-outflow">
-                Failed to add: {addChild.error instanceof Error ? addChild.error.message : "unknown error"}
+              <div className="max-w-md">
+                <PanelError title="Couldn't add the line item." error={addChild.error} compact />
               </div>
             )}
           </form>

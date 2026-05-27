@@ -26,6 +26,7 @@ import {
   type DailyMoveActionRecord,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* Source-kind glyph + nav target. Mirrors MoneyOnTablePanel's
  * SOURCE_KIND_META but trimmed to what we need on a per-row card.
@@ -429,16 +430,7 @@ export default function DailyMovesPanel() {
     );
   }
   if (report.isError) {
-    return (
-      <div className="bg-card border border-border rounded-md shadow-card p-6 text-sm">
-        <div className="text-outflow font-semibold mb-2">
-          Couldn't load daily moves
-        </div>
-        <div className="text-text-muted text-xs">
-          {String((report.error as Error)?.message ?? report.error)}
-        </div>
-      </div>
-    );
+    return <PanelError title="Couldn't load Daily moves." error={report.error} onRetry={() => report.refetch()} />;
   }
   if (!data) return null;
 

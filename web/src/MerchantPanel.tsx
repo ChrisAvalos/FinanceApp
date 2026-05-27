@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api, fmtCents } from "./api/client";
 import CountUp from "./components/CountUp";
 import { SkelLine, SkelStat } from "./components/Skeleton";
+import PanelError from "./components/PanelError";
 
 export default function MerchantPanel() {
   const [query, setQuery] = useState("");
@@ -58,20 +59,12 @@ export default function MerchantPanel() {
       {/* Error branch — the API raises 404 when no transactions match the
           exact normalized description, so most "no result" cases land here. */}
       {detail.isError && (
-        <div className="bg-card border border-border rounded-md shadow-card p-6 text-center text-sm max-w-xl mx-auto">
-          <div className="text-2xl mb-1">🔎</div>
-          <div className="text-text-muted">
-            No transactions found for{" "}
-            <span className="font-mono font-semibold text-text">
-              {active}
-            </span>
-            .
-          </div>
-          <div className="text-[11px] text-text-soft mt-2">
-            The lookup is exact — the description must match (uppercase,
-            full prefix). Try copying the description directly from a
-            transaction row in the Transactions panel.
-          </div>
+        <div className="max-w-xl mx-auto">
+          <PanelError
+            title={`Couldn't load Merchant "${active}".`}
+            error={detail.error}
+            onRetry={() => detail.refetch()}
+          />
         </div>
       )}
 

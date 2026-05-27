@@ -7,6 +7,7 @@ import {
   type ParserOutcome,
 } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -316,8 +317,8 @@ export default function GmailPanel() {
         )}
 
         {sync.isError && (
-          <div className="px-5 py-3 text-xs text-outflow bg-red-50 border-b border-border">
-            {sync.error instanceof Error ? sync.error.message : "Sync failed"}
+          <div className="px-5 py-3 border-b border-border">
+            <PanelError title="Couldn't sync Gmail." error={sync.error} onRetry={() => sync.mutate({})} compact />
           </div>
         )}
 

@@ -30,6 +30,7 @@ import CategoryReparentBoard from "./components/CategoryReparentBoard";
 import EomBreakdownCard from "./components/EomBreakdownCard";
 import BudgetMathCard from "./components/BudgetMathCard";
 import ProjectionChart from "./components/ProjectionChart";
+import PanelError from "./components/PanelError";
 import { useAnimatedProjection } from "./components/useAnimatedProjection";
 import {
   CelebrationToastStack,
@@ -453,7 +454,15 @@ function BudgetProjection({
       </div>
     );
   }
-  if (projection.isError || !data || !headlines) {
+  if (projection.isError) {
+    return (
+      <div className="bg-card border border-border rounded-md shadow-card p-5 mb-6">
+        <h3 className="text-sm font-semibold text-text mb-3">Projection</h3>
+        <PanelError title="Couldn't load Budgets projection." error={projection.error} onRetry={() => projection.refetch()} compact />
+      </div>
+    );
+  }
+  if (!data || !headlines) {
     return (
       <div className="bg-card border border-border rounded-md shadow-card p-5 mb-6">
         <h3 className="text-sm font-semibold text-text">Projection</h3>
@@ -1233,7 +1242,15 @@ function BudgetRecommendations({
       </div>
     );
   }
-  if (recs.isError || !recs.data) {
+  if (recs.isError) {
+    return (
+      <div className="bg-card border border-border rounded-md shadow-card p-5 mb-6">
+        <h3 className="text-sm font-semibold text-text mb-3">Smart recommendations</h3>
+        <PanelError title="Couldn't load Budget recommendations." error={recs.error} onRetry={() => recs.refetch()} compact />
+      </div>
+    );
+  }
+  if (!recs.data) {
     return null;
   }
   const data = recs.data;

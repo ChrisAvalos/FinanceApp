@@ -22,6 +22,7 @@
  */
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import PanelError from "./components/PanelError";
 import {
   api,
   fmtCents,
@@ -451,12 +452,9 @@ function ReceiptDetailView({
               user sees "couldn't read this receipt" without having to
               open the dev tools. */}
           {visionOcr.isError && (
-            <span
-              className="text-[11px] text-outflow max-w-[18ch] truncate"
-              title={(visionOcr.error as Error)?.message ?? ""}
-            >
-              Vision OCR failed
-            </span>
+            <div className="max-w-xs">
+              <PanelError title="Vision OCR failed." error={visionOcr.error} onRetry={() => visionOcr.mutate()} compact />
+            </div>
           )}
           {visionOcr.data && (visionOcr.data.warnings ?? []).length > 0 && (
             <span

@@ -36,11 +36,12 @@ from ..db.models import (
     Account,
     AccountType,
     Bill,
-    Category,
     Subscription,
     SubscriptionStatus,
     Transaction,
 )
+from ..enrichment import is_payroll
+from ..budgets.monthly_financials import account_ids_for, INCOME_ACCOUNT_TYPES
 
 
 class EventKind(str, Enum):
@@ -202,26 +203,32 @@ _COMMON_CADENCES = (7, 14, 15, 30)
 def _infer_paycheck_cadence(
     db: Session, *, lookback_days: int = 90
 ) -> tuple[int | None, float, int]:
-    """Walk the trailing income.salary inflows; return (cadence_days, confidence, typical_amount).
+    """Walk the trailing payroll inflows; return (cadence_days, confidence, typical_amount).
+
+    Sprint O consistency fix: paychecks are now identified via the
+    canonical ``is_payroll`` classifier (description-based, matches
+    "LIVIO ...") rather than by the ``income.salary`` Category slug.
+    The slug-based path missed uncategorized payroll wires, which left
+    the cash-flow forecast silently inconsistent with the budgets
+    rollup (which has always used ``is_payroll``).
 
     Returns ``(None, 0.0, 0)`` when there's <2 paychecks or the gap pattern
     is too irregular to confidently project.
     """
-    cat = db.execute(
-        select(Category).where(Category.slug == "income.salary").limit(1)
-    ).scalar_one_or_none()
-    if cat is None:
-        return (None, 0.0, 0)
     cutoff = date.today() - timedelta(days=lookback_days)
+    income_account_ids = account_ids_for(db, INCOME_ACCOUNT_TYPES)
+    if not income_account_ids:
+        return (None, 0.0, 0)
     rows = list(
         db.execute(
             select(Transaction)
-            .where(Transaction.category_id == cat.id)
             .where(Transaction.amount_cents > 0)
             .where(Transaction.posted_date >= cutoff)
+            .where(Transaction.account_id.in_(income_account_ids))
             .order_by(Transaction.posted_date)
         ).scalars().all()
     )
+    rows = [t for t in rows if is_payroll(t)]
     if len(rows) < 2:
         return (None, 0.0, 0)
     gaps = [(rows[i + 1].posted_date - rows[i].posted_date).days for i in range(len(rows) - 1)]
@@ -261,20 +268,19 @@ def _project_paychecks(
     if typical <= 0:
         return ([], cadence, confidence)
 
-    cat = db.execute(
-        select(Category).where(Category.slug == "income.salary").limit(1)
-    ).scalar_one_or_none()
-    if cat is None:
+    income_account_ids = account_ids_for(db, INCOME_ACCOUNT_TYPES)
+    if not income_account_ids:
         return ([], cadence, confidence)
     history = list(
         db.execute(
             select(Transaction)
-            .where(Transaction.category_id == cat.id)
             .where(Transaction.amount_cents > 0)
             .where(Transaction.posted_date >= date.today() - timedelta(days=120))
+            .where(Transaction.account_id.in_(income_account_ids))
             .order_by(Transaction.posted_date)
         ).scalars().all()
     )
+    history = [t for t in history if is_payroll(t)]
     if not history:
         return ([], cadence, confidence)
     last_paycheck_date = history[-1].posted_date

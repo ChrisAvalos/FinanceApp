@@ -29,6 +29,7 @@ import {
 import { SkelListRows } from "./components/Skeleton";
 import CountUp from "./components/CountUp";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 import {
   getSessionSavings,
   subscribeSessionSavings,
@@ -624,9 +625,7 @@ export default function MoneyOnTablePanel() {
           {report.isLoading && <SkelListRows count={6} />}
 
           {report.isError && (
-            <div className="text-sm text-outflow text-center py-8">
-              Could not load opportunities: {(report.error as Error).message}
-            </div>
+            <PanelError title="Couldn't load Money-on-the-table." error={report.error} onRetry={() => report.refetch()} compact />
           )}
 
           {report.data && visible.length === 0 && (

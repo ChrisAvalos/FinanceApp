@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, type Account, type PlaidItem } from "./api/client";
 import { loadPlaidLink } from "./plaidLink";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Status badge                                                       */
@@ -426,15 +427,13 @@ export default function ConnectionsPanel() {
       {/* Surface sync mutation errors so a 5xx doesn't look like a no-op.
           Without this, useMutation.error gets swallowed silently. */}
       {syncAll.isError && (
-        <div className="px-5 py-3 bg-red-50 text-outflow text-xs border-b border-border">
-          Sync all failed —{" "}
-          {syncAll.error instanceof Error ? syncAll.error.message : String(syncAll.error)}
+        <div className="px-5 py-3 border-b border-border">
+          <PanelError title="Couldn't sync all Bank connections." error={syncAll.error} onRetry={() => syncAll.mutate()} compact />
         </div>
       )}
       {syncItem.isError && (
-        <div className="px-5 py-3 bg-red-50 text-outflow text-xs border-b border-border">
-          Sync failed —{" "}
-          {syncItem.error instanceof Error ? syncItem.error.message : String(syncItem.error)}
+        <div className="px-5 py-3 border-b border-border">
+          <PanelError title="Couldn't sync that Bank connection." error={syncItem.error} compact />
         </div>
       )}
 

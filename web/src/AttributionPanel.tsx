@@ -18,6 +18,7 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api, fmtCents, type AttributionMonth } from "./api/client";
 import SyncFreshnessChip from "./components/SyncFreshness";
+import PanelError from "./components/PanelError";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
@@ -372,8 +373,8 @@ export default function AttributionPanel() {
             Computing attribution…
           </div>
         ) : report.isError ? (
-          <div className="p-12 text-center text-outflow text-sm">
-            Couldn't load attribution.
+          <div className="p-6">
+            <PanelError title="Couldn't load Attribution." error={report.error} onRetry={() => report.refetch()} compact />
           </div>
         ) : report.data && report.data.months.length === 0 ? (
           <div className="p-12 text-center text-text-muted text-sm">
