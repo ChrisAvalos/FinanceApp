@@ -257,7 +257,7 @@ function ManualEntryForm({
     >
       <div className="flex items-center justify-between mb-2">
         <h4 className="text-sm font-semibold">Log a price observation</h4>
-        <button type="button" onClick={() => setOpen(false)} className="text-text-muted">×</button>
+        <button type="button" onClick={() => setOpen(false)} className="text-text-muted" aria-label="Close">×</button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
         <label>

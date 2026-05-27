@@ -91,7 +91,7 @@ function AddReceiptForm({ onAdd }: { onAdd: (p: any) => void }) {
         setOpen(false);
       }}
     >
-      <div className="flex justify-between"><h4 className="text-sm font-semibold">New HSA receipt</h4><button type="button" onClick={() => setOpen(false)}>×</button></div>
+      <div className="flex justify-between"><h4 className="text-sm font-semibold">New HSA receipt</h4><button type="button" onClick={() => setOpen(false)} aria-label="Close">×</button></div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
         <label><span className="block mb-1 font-semibold uppercase text-[10px]">Date</span><input type="date" value={form.expense_date} onChange={(e) => setForm({ ...form, expense_date: e.target.value })} className="w-full px-2 py-1.5 border border-border rounded" /></label>
         <label><span className="block mb-1 font-semibold uppercase text-[10px]">Amount ($) *</span><input type="number" step={0.01} value={form.amount_dollars} onChange={(e) => setForm({ ...form, amount_dollars: e.target.value })} className="w-full px-2 py-1.5 border border-border rounded" /></label>

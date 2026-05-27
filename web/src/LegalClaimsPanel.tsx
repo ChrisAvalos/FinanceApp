@@ -501,7 +501,7 @@ function ScrapeResultBanner({ result, onDismiss }: { result: ScraperRunResponse;
           {result.total_updated > 0 && `, ${result.total_updated} updated`}
           <span className="text-text-soft font-normal ml-2 text-xs">({elapsed.toFixed(1)}s)</span>
         </div>
-        <button onClick={onDismiss} className="text-text-muted">×</button>
+        <button onClick={onDismiss} className="text-text-muted" aria-label="Dismiss">×</button>
       </div>
       <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
         {ok.map((s) => (

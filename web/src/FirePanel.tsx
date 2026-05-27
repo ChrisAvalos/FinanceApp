@@ -134,7 +134,9 @@ function FanChart({
   const medianHitX = medianHitIdx >= 0 ? xScale(medianHitIdx) : null;
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-80">
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-80" role="img" aria-labelledby="fire-chart-title" aria-describedby="fire-chart-desc">
+      <title id="fire-chart-title">FIRE Monte Carlo: probability of hitting your number by retirement age</title>
+      <desc id="fire-chart-desc">A fan chart showing the 10th, 50th, and 90th percentile portfolio paths across simulated futures, with the FIRE target line and chosen retirement age marked.</desc>
       {/* Y-axis grid */}
       {yTicks.map((v) => (
         <g key={v}>
@@ -330,6 +332,7 @@ function FanChartHover({
           viewBox={`0 0 ${W} 320`}
           className="w-full h-full absolute inset-0 pointer-events-none"
           preserveAspectRatio="none"
+          aria-hidden="true"
         >
           <line
             x1={crosshairVbX}
@@ -437,6 +440,8 @@ function SliderRow({
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full accent-brand"
+        aria-label={label}
+        aria-valuetext={format(value)}
       />
       {hint && <div className="text-[10px] text-text-soft mt-0.5">{hint}</div>}
     </div>

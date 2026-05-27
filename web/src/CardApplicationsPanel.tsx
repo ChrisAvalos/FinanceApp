@@ -218,7 +218,7 @@ function NewApplicationForm({ onAdd }: { onAdd: (p: any) => void }) {
       setForm({ issuer: "", card_name: "", bonus_value_dollars: "", minimum_spend_dollars: "", minimum_spend_window_days: "90", annual_fee_dollars: "", counts_toward_5_24: true });
       setOpen(false);
     }}>
-      <div className="flex justify-between"><h4 className="text-sm font-semibold">Plan new card application</h4><button type="button" onClick={() => setOpen(false)}>×</button></div>
+      <div className="flex justify-between"><h4 className="text-sm font-semibold">Plan new card application</h4><button type="button" onClick={() => setOpen(false)} aria-label="Close">×</button></div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
         <label><span className="block mb-1 font-semibold uppercase text-[10px]">Issuer *</span><input value={form.issuer} onChange={(e) => setForm({ ...form, issuer: e.target.value })} placeholder="Chase, Amex, Capital One" className="w-full px-2 py-1.5 border border-border rounded" /></label>
         <label><span className="block mb-1 font-semibold uppercase text-[10px]">Card name *</span><input value={form.card_name} onChange={(e) => setForm({ ...form, card_name: e.target.value })} placeholder="Sapphire Preferred" className="w-full px-2 py-1.5 border border-border rounded" /></label>

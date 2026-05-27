@@ -95,7 +95,8 @@ function Sparkline({ series }: { series: NetWorthHistoryPoint[] }) {
   const area = `0,${h} ${points.join(" ")} ${w},${h}`;
   const line = points.join(" ");
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-32">
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-32" role="img" aria-labelledby="net-worth-chart-title">
+      <title id="net-worth-chart-title">Net worth over time</title>
       <polygon points={area} fill="rgba(37, 99, 235, 0.08)" />
       <polyline points={line} fill="none" stroke="#2563eb" strokeWidth="2" />
       <circle

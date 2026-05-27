@@ -50,7 +50,8 @@ function BalanceChart({ daily, crunchDays }: { daily: DailyForecastPoint[]; crun
   const crunchSet = new Set(crunchDays);
 
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-40">
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-40" role="img" aria-labelledby="cashflow-chart-title">
+      <title id="cashflow-chart-title">Cash flow projection — running balance over next 30 days</title>
       <line x1={padX} y1={zeroY} x2={w - padX} y2={zeroY} stroke="#cbd5e1" strokeDasharray="3 3" />
       <polyline points={line} fill="none" stroke="#2563eb" strokeWidth="2" />
       {points.map((p) => {

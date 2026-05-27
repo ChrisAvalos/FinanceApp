@@ -254,7 +254,7 @@ function AddRecordForm({ onAdd }: { onAdd: (payload: any) => void }) {
     >
       <div className="flex items-center justify-between">
         <h4 className="text-sm font-semibold">New match found via search</h4>
-        <button type="button" onClick={() => setOpen(false)} className="text-text-muted">×</button>
+        <button type="button" onClick={() => setOpen(false)} className="text-text-muted" aria-label="Close">×</button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
         <Input label="State *" value={form.state} onChange={(v) => setForm({ ...form, state: v })} placeholder="CA / TX / NY" />

@@ -351,7 +351,13 @@ export default function ChatPanel() {
 
       <div className="bg-card border border-border rounded-md shadow-card flex flex-col h-[70vh]">
         {/* Message list */}
-        <div ref={scrollerRef} className="flex-1 overflow-y-auto px-4 py-4">
+        <div
+          ref={scrollerRef}
+          className="flex-1 overflow-y-auto px-4 py-4"
+          aria-live="polite"
+          aria-atomic="false"
+          aria-label="Chat messages"
+        >
           {history.length === 0 ? (
             <div className="text-center text-text-muted text-sm py-12">
               <div className="text-3xl mb-3">💬</div>

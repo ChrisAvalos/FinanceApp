@@ -77,7 +77,8 @@ function PieSlices({
 
   let cum = 0;
   return (
-    <svg viewBox="0 0 220 220" width={260} height={260} aria-label="Spending by category">
+    <svg viewBox="0 0 220 220" width={260} height={260} role="img" aria-labelledby="trends-chart-title">
+      <title id="trends-chart-title">Trends: monthly outflow by category</title>
       {data.map((d) => {
         const start = (cum / total) * 2 * Math.PI;
         cum += d.cents;

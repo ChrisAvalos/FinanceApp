@@ -1481,6 +1481,7 @@ export default function App() {
         <Sidebar active={active} onPick={setActive} />
         <main
           id="main-content"
+          tabIndex={-1}
           className="flex-1 px-8 py-6 overflow-y-auto"
           aria-label="Panel content"
         >

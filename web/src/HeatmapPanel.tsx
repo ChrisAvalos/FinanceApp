@@ -61,7 +61,7 @@ function HeatGrid({ days }: { days: HeatmapDay[] }) {
   if (current.some((c) => c)) weeks.push(current);
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-1" role="img" aria-label="Daily spending heatmap">
       <div className="flex flex-col gap-1 pr-1 text-[9px] text-text-soft">
         {DOW_LABELS.map((l) => <div key={l} className="h-3">{l}</div>)}
       </div>

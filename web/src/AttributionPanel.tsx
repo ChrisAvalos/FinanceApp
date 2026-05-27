@@ -362,7 +362,11 @@ export default function AttributionPanel() {
       </div>
 
       {/* Per-month list */}
-      <div className="bg-card border border-border rounded-md shadow-card overflow-hidden">
+      <div
+        className="bg-card border border-border rounded-md shadow-card overflow-hidden"
+        role="img"
+        aria-label="Attribution: monthly net-worth delta breakdown"
+      >
         {report.isLoading ? (
           <div className="p-12 text-center text-text-muted text-sm">
             Computing attribution…
