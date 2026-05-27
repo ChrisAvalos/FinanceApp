@@ -62,7 +62,7 @@ function PieSlices({
   selectedCategoryId,
   onSliceClick,
 }: {
-  data: { category_id: number | null; category_name: string | null; cents: number; color: string }[];
+  data: { category_id: number | null; category_name: string | null; cents: number; color: string; isOverflow?: boolean }[];
   selectedCategoryId: number | null | "none";
   onSliceClick: (categoryId: number | null) => void;
 }) {
@@ -98,11 +98,16 @@ function PieSlices({
             stroke="white"
             strokeWidth={2}
             opacity={dim}
-            style={{ cursor: "pointer", transition: "opacity 120ms ease, d 120ms ease" }}
-            onClick={() => onSliceClick(d.category_id)}
+            style={{
+              cursor: d.isOverflow ? "default" : "pointer",
+              transition: "opacity 120ms ease, d 120ms ease",
+              pointerEvents: d.isOverflow ? "none" : undefined,
+            }}
+            onClick={d.isOverflow ? undefined : () => onSliceClick(d.category_id)}
           >
             <title>
               {d.category_name ?? "(uncategorized)"}: {fmtCents(d.cents)} · {pct}%
+              {d.isOverflow ? " (aggregate — not drillable)" : ""}
             </title>
           </path>
         );
@@ -120,7 +125,7 @@ function buildSliceData(
   categories: CategoryTrendRow[],
   monthIndex: number | "all",
   monthsLength: number,
-): { category_id: number | null; category_name: string | null; cents: number; color: string }[] {
+): { category_id: number | null; category_name: string | null; cents: number; color: string; isOverflow?: boolean }[] {
   const totals = categories
     .map((c) => {
       const cents =
@@ -148,6 +153,7 @@ function buildSliceData(
       category_name: `Other (${tail.length} categories)`,
       cents: otherCents,
       color: OVERFLOW_COLOR,
+      isOverflow: true,
     },
   ];
 }
@@ -215,7 +221,7 @@ function CategorySharePie({ months, categories }: { months: MonthOutflowCell[]; 
     enabled: selectedCat !== "none" && !!range,
   });
 
-  const selectedSlice = slices.find((s) => s.category_id === selectedCat);
+  const selectedSlice = slices.find((s) => !s.isOverflow && s.category_id === selectedCat);
 
   return (
     <div className="bg-card border border-border rounded-md shadow-card p-5">
@@ -280,16 +286,21 @@ function CategorySharePie({ months, categories }: { months: MonthOutflowCell[]; 
           )}
           {slices.map((s) => {
             const pct = total > 0 ? ((s.cents / total) * 100).toFixed(1) : "0.0";
-            const isSelected = s.category_id === selectedCat;
+            const isSelected = !s.isOverflow && s.category_id === selectedCat;
             return (
               <button
-                key={String(s.category_id ?? "uncat")}
-                onClick={() =>
-                  setSelectedCat((prev) => (prev === s.category_id ? "none" : s.category_id))
+                key={String(s.category_id ?? "uncat") + (s.isOverflow ? "-overflow" : "")}
+                onClick={
+                  s.isOverflow
+                    ? undefined
+                    : () =>
+                        setSelectedCat((prev) => (prev === s.category_id ? "none" : s.category_id))
                 }
+                disabled={s.isOverflow}
+                title={s.isOverflow ? "Aggregate of long-tail categories — drill into the individual category in the table below" : undefined}
                 className={`w-full flex items-center gap-2 px-2 py-1 rounded text-left text-xs transition-colors ${
                   isSelected ? "bg-hover" : "hover:bg-hover"
-                }`}
+                } ${s.isOverflow ? "cursor-default opacity-70" : ""}`}
               >
                 <span
                   className="inline-block w-3 h-3 rounded-sm shrink-0"
@@ -339,10 +350,7 @@ function CategorySharePie({ months, categories }: { months: MonthOutflowCell[]; 
           )}
           {drillTxns.data && drillTxns.data.length === 0 && !drillTxns.isLoading && (
             <div className="text-xs text-text-muted py-3 italic">
-              The slice value is from aggregated rollups; individual
-              transactions weren't returned for this filter (the matcher
-              uses category_id which can be null for the "uncategorized"
-              slice — try a different slice or "Overall").
+              No transactions found in this window.
             </div>
           )}
           {drillTxns.data && drillTxns.data.length > 0 && (

@@ -684,7 +684,7 @@ export default function ReceiptsPanel() {
           label="Last fetched"
         />
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+      <div className="grid grid-cols-2 gap-4 mb-5">
         <div className="bg-card border border-border rounded-md p-4 shadow-card">
           <div className="text-xs text-text-muted uppercase tracking-wide">Receipts logged</div>
           <div className="text-2xl font-semibold tabular-nums mt-1 text-text">{list.data?.length ?? 0}</div>
@@ -693,11 +693,6 @@ export default function ReceiptsPanel() {
         <div className="bg-card border border-border rounded-md p-4 shadow-card">
           <div className="text-xs text-text-muted uppercase tracking-wide">Total tracked spend</div>
           <div className="text-2xl font-semibold tabular-nums mt-1 text-text">{fmtCents(totalSpend)}</div>
-        </div>
-        <div className="bg-card border border-border rounded-md p-4 shadow-card">
-          <div className="text-xs text-text-muted uppercase tracking-wide">Coming next</div>
-          <div className="text-sm font-semibold mt-1 text-text">Slice C: coupons</div>
-          <div className="text-[11px] text-text-soft mt-0.5">Receipt-bottom coupon codes → Money on the Table</div>
         </div>
       </div>
 

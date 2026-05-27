@@ -13,6 +13,7 @@ LLM calls. A future ``llm_fallback`` hook can route the residual ~5% to Ollama.
 """
 from __future__ import annotations
 
+import logging
 import re
 from collections import Counter
 from dataclasses import dataclass
@@ -32,6 +33,8 @@ from finance_app.db.models import (
 )
 
 UNCATEGORIZED_SLUG = "uncategorized"
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -178,7 +181,11 @@ class CategorizationEngine:
                     rule_id=None,
                 )
         except Exception:  # noqa: BLE001 — never let PFC mapper tank the engine
-            pass
+            logger.warning(
+                "Plaid PFC mapper failed for txn id=%s; falling through",
+                getattr(txn, "id", None),
+                exc_info=True,
+            )
 
         # 4. T3 LLM fallback (Phase 5.4). Disabled by default — flip
         # ``self.llm_fallback_enabled`` on the engine instance to turn
@@ -199,7 +206,11 @@ class CategorizationEngine:
                         rule_id=None,
                     )
             except Exception:  # noqa: BLE001 — never let LLM tank categorization
-                pass
+                logger.warning(
+                    "LLM fallback classifier failed for txn id=%s; falling through",
+                    getattr(txn, "id", None),
+                    exc_info=True,
+                )
 
         # 5. Default bucket
         return CategorizationResult(
@@ -273,6 +284,9 @@ class CategorizationEngine:
                 # Don't let a hit-counter SQL error tank a categorization
                 # run. Worst case the metric is stale; the categorizations
                 # themselves were already applied above.
-                pass
+                logger.warning(
+                    "Failed to flush rule hit counters; metric will be stale",
+                    exc_info=True,
+                )
         self.db.commit()
         return counts

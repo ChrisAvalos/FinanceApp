@@ -1321,7 +1321,7 @@ export default function SubscriptionsPanel() {
           </div>
           {createSub.isError && (
             <div className="text-[11px] text-outflow mt-1">
-              Couldn't add the subscription \u2014 check the name and amount.
+              Couldn't add the subscription — check the name and amount.
             </div>
           )}
         </div>
